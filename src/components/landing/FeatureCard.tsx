@@ -15,7 +15,7 @@ export default function FeatureCard({
   return (
     <Card>
       <CardHeader>
-        <Icon className="h-10 w-10 mb-2" />
+        <Icon className="w-10 h-10 mb-2" />
         <CardTitle>{title}</CardTitle>
         <CardDescription>{description}</CardDescription>
       </CardHeader>
