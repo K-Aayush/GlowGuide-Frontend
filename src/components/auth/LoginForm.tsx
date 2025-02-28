@@ -63,7 +63,7 @@ const LoginForm = () => {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Username</FormLabel>
+                    <FormLabel>Email</FormLabel>
                     <FormControl>
                       <Input placeholder="example@gmail.com" {...field} />
                     </FormControl>
@@ -90,13 +90,13 @@ const LoginForm = () => {
               <p className="mt-4 text-sm text-blue-600 cursor-pointer">
                 Forgot Password?
               </p>
-              <Button type="submit">Submit</Button>
+              <Button type="submit">Login</Button>
             </form>
           </Form>
           <p className="mt-5 text-center">
             Don't have an account?
             <Link to={"/register"}>
-              <span className="text-blue-600 cursor-pointer"> Signup</span>
+              <span className="text-blue-600 cursor-pointer"> Sign up</span>
             </Link>
           </p>
         </div>

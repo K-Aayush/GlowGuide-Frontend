@@ -30,5 +30,7 @@ export const registerFormSchema = z.object({
       "Must contain one special character"
     ),
   name: z.string().min(3, "Name is required"),
-  role: z.enum(["USER", "DERMATOLOGISTS"]).default("USER"),
+  role: z.enum(["USER", "DERMATOLOGISTS"], {
+    errorMap: () => ({ message: "you must select a role" }),
+  }),
 });
