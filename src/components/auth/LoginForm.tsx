@@ -16,7 +16,9 @@ const LoginForm = () => {
         </div>
 
         {/*Right side*/}
-        <div className="w-1/2">Right</div>
+        <div className="w-1/2">
+          
+        </div>
       </div>
     </div>
   );
