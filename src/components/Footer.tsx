@@ -4,11 +4,11 @@ import { FaInstagram, FaTwitter, FaFacebook } from "react-icons/fa6";
 const Footer = () => {
   return (
     <footer className="w-full py-6 mt-20 bg-gray-100">
-      <div className="container flex flex-col items-center gap-4 text-center md:flex-row md:justify-between">
+      <div className="flex flex-col items-center w-full max-w-screen-xl gap-4 px-6 mx-auto text-center md:flex-row md:justify-between">
         {/* Logo and Branding */}
         <div className="flex items-center space-x-3">
           <Sparkles className="w-6 h-6" />
-          <span className="hidden font-bold sm:inline-block">GlowGuide</span>
+          <span className="text-lg font-semibold text-gray-700">GlowGuide</span>
         </div>
 
         {/* Social Media Icons */}
