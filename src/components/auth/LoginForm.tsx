@@ -13,8 +13,11 @@ import {
 } from "../ui/form";
 import { Input } from "../ui/input";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import { EyeIcon, EyeOff } from "lucide-react";
 
 const LoginForm = () => {
+  const [showPassword, setShowPassword] = useState<boolean>(false);
   const form = useForm<loginFormData>({
     resolver: zodResolver(loginFormSchema),
     defaultValues: {
@@ -84,12 +87,25 @@ const LoginForm = () => {
                   <FormItem>
                     <FormLabel>Password</FormLabel>
                     <FormControl>
-                      <Input
-                        type="password"
-                        required
-                        placeholder="Enter your Password"
-                        {...field}
-                      />
+                      <div className="relative">
+                        <Input
+                          required
+                          type={showPassword ? "text" : "password"}
+                          placeholder="Enter your Password"
+                          {...field}
+                        />
+                        {showPassword ? (
+                          <EyeIcon
+                            onClick={() => setShowPassword(!showPassword)}
+                            className="absolute w-5 h-5 cursor-pointer top-1/4 right-3"
+                          />
+                        ) : (
+                          <EyeOff
+                            onClick={() => setShowPassword(!showPassword)}
+                            className="absolute w-5 h-5 cursor-pointer top-1/4 right-3"
+                          />
+                        )}
+                      </div>
                     </FormControl>
 
                     <FormMessage />
