@@ -32,7 +32,7 @@ const LoginForm = () => {
   };
   return (
     <div className="flex items-center justify-center w-full min-h-screen">
-      <div className="flex items-center w-full max-w-sm mx-4 bg-gray-300 rounded-lg shadow-sm md:max-w-screen-lg">
+      <div className="flex items-center w-full max-w-sm mx-4 bg-gray-300 border rounded-lg shadow-md md:max-w-screen-lg">
         {/*Left side*/}
         <div className="w-1/2 max-md:hidden">
           <img
@@ -97,12 +97,12 @@ const LoginForm = () => {
                         {showPassword ? (
                           <EyeIcon
                             onClick={() => setShowPassword(!showPassword)}
-                            className="absolute w-5 h-5 cursor-pointer top-1/4 right-3"
+                            className="absolute w-5 h-5 text-gray-700 cursor-pointer top-1/4 right-3"
                           />
                         ) : (
                           <EyeOff
                             onClick={() => setShowPassword(!showPassword)}
-                            className="absolute w-5 h-5 cursor-pointer top-1/4 right-3"
+                            className="absolute w-5 h-5 text-gray-700 cursor-pointer top-1/4 right-3"
                           />
                         )}
                       </div>

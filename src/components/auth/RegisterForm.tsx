@@ -1,4 +1,4 @@
-import makeup from "../../assets/makeup kit.jpg";
+import beauty from "../../assets/beauty.jpg";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registerFormData, registerFormSchema } from "../../lib/validator";
@@ -41,12 +41,12 @@ const RegisterForm = () => {
   };
   return (
     <div className="flex items-center justify-center w-full min-h-screen">
-      <div className="flex items-center w-full max-w-sm mx-4 bg-gray-300 rounded-lg shadow-sm md:max-w-screen-lg">
+      <div className="flex items-center w-full max-w-sm mx-4 bg-gray-300 border rounded-lg shadow-md md:max-w-screen-lg">
         {/*Left side*/}
         <div className="w-1/2 max-md:hidden">
           <img
-            src={makeup}
-            alt="makeup image"
+            src={beauty}
+            alt="modal image"
             loading="lazy"
             decoding="async"
             className="object-contain object-center w-full h-full rounded-l-lg"
@@ -127,12 +127,12 @@ const RegisterForm = () => {
                           {showPassword ? (
                             <EyeIcon
                               onClick={() => setShowPassword(!showPassword)}
-                              className="absolute w-5 h-5 cursor-pointer top-1/4 right-3"
+                              className="absolute w-5 h-5 text-gray-700 cursor-pointer top-1/4 right-3"
                             />
                           ) : (
                             <EyeOff
                               onClick={() => setShowPassword(!showPassword)}
-                              className="absolute w-5 h-5 cursor-pointer top-1/4 right-3"
+                              className="absolute w-5 h-5 text-gray-700 cursor-pointer top-1/4 right-3"
                             />
                           )}
                         </div>
