@@ -1,8 +1,6 @@
-import { DivideIcon as LucideIcon } from "lucide-react";
 import { Card, CardDescription, CardHeader, CardTitle } from "../ui/card";
-
 interface FeatureCardProps {
-  icon: LucideIcon;
+  icon: any;
   title: string;
   description: string;
 }
