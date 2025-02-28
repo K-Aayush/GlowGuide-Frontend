@@ -20,15 +20,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import { useState } from "react";
+import { EyeIcon, EyeOff } from "lucide-react";
 
 const RegisterForm = () => {
+  const [showPassword, setShowPassword] = useState<boolean>(false);
   const form = useForm<registerFormData>({
     resolver: zodResolver(registerFormSchema),
     defaultValues: {
       email: "",
       password: "",
       name: "",
-      role: "",
+      role: undefined,
     },
     mode: "onChange",
   });
@@ -51,12 +54,12 @@ const RegisterForm = () => {
         </div>
 
         {/*Right side*/}
-        <div className="w-full px-6 py-10 md:w-1/2">
+        <div className="w-full px-6 py-10 md:py-6 md:w-1/2">
           <div className="text-center">
             <h2 className="text-xl font-bold text-gray-800">
               Create an Account
             </h2>
-            <p className="text-gray-600 text-md">
+            <p className="text-xs text-gray-600 md:text-sm">
               Join GlowGuide to get personalized skincare routines, expert
               advice, and track your progress effortlessly! ✨
             </p>
@@ -67,81 +70,112 @@ const RegisterForm = () => {
               onSubmit={form.handleSubmit(handleSubmit)}
               className="flex flex-col w-full mt-4 space-y-4"
             >
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Full Name</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Enter Your Full Name" {...field} />
-                    </FormControl>
+              <div className="space-y-2">
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Full Name</FormLabel>
+                      <FormControl>
+                        <Input
+                          required
+                          type="text"
+                          placeholder="Enter your full name"
+                          {...field}
+                        />
+                      </FormControl>
 
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input placeholder="example@gmail.com" {...field} />
-                    </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                        <Input
+                          required
+                          type="email"
+                          placeholder="example@gmail.com"
+                          {...field}
+                        />
+                      </FormControl>
 
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Enter your Password" {...field} />
-                    </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Password</FormLabel>
+                      <FormControl>
+                        <div className="relative">
+                          <Input
+                            required
+                            type={showPassword ? "text" : "password"}
+                            placeholder="Enter your Password"
+                            {...field}
+                          />
+                          {showPassword ? (
+                            <EyeIcon
+                              onClick={() => setShowPassword(!showPassword)}
+                              className="absolute w-5 h-5 cursor-pointer top-1/4 right-3"
+                            />
+                          ) : (
+                            <EyeOff
+                              onClick={() => setShowPassword(!showPassword)}
+                              className="absolute w-5 h-5 cursor-pointer top-1/4 right-3"
+                            />
+                          )}
+                        </div>
+                      </FormControl>
 
-              <FormField
-                control={form.control}
-                name="role"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Type</FormLabel>
-                    <FormControl>
-                      <Select
-                        value={field.value}
-                        onValueChange={field.onChange}
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select a role" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem className="cursor-pointer" value="USER">
-                            User
-                          </SelectItem>
-                          <SelectItem
-                            className="cursor-pointer"
-                            value="DERMATOLOGISTS"
-                          >
-                            Dermatologist
-                          </SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                <FormField
+                  control={form.control}
+                  name="role"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Type</FormLabel>
+                      <FormControl>
+                        <Select
+                          value={field.value}
+                          onValueChange={field.onChange}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select a role" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem className="cursor-pointer" value="USER">
+                              User
+                            </SelectItem>
+                            <SelectItem
+                              className="cursor-pointer"
+                              value="DERMATOLOGISTS"
+                            >
+                              Dermatologist
+                            </SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
 
               <Button type="submit">Create Account</Button>
             </form>
