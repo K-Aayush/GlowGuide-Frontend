@@ -7,3 +7,11 @@ export interface userDataProps {
   image?: string;
   phone: string;
 }
+
+export interface authResponse {
+    success: boolean;
+    user: userDataProps;
+    token: string;
+    message: string;
+  }
+  

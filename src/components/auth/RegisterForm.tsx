@@ -20,11 +20,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { EyeIcon, EyeOff } from "lucide-react";
+import { AppContext } from "../../context/AppContext";
+import axios from "axios";
+import { authResponse } from "../../lib/data";
 
 const RegisterForm = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const { setIsLoading, backendUrl, setToken, setUserData } =
+    useContext(AppContext);
   const form = useForm<registerFormData>({
     resolver: zodResolver(registerFormSchema),
     defaultValues: {
@@ -37,8 +42,40 @@ const RegisterForm = () => {
     mode: "onChange",
   });
 
-  const handleSubmit = (values: registerFormData) => {
+  const handleSubmit = async (values: registerFormData) => {
     console.log(values);
+    try {
+      setIsLoading(true);
+
+      //creating new formData
+      const formData = new FormData();
+
+      //appending form data
+      formData.append("email", values.email);
+      formData.append("password", values.password);
+      formData.append("phone", values.phone);
+      formData.append("name", values.name);
+      formData.append("role", values.role);
+
+      //calling register api
+      const { data } = await axios.post<authResponse>(
+        `${backendUrl}/api/auth/register`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (data.success) {
+        
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
   return (
     <div className="flex items-center justify-center w-full min-h-screen">
