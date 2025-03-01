@@ -1,3 +1,4 @@
+import { userDataProps } from "../lib/data";
 import { AppContext } from "./AppContext";
 import React, { useState } from "react";
 
@@ -6,8 +7,8 @@ const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   //get token and userdata
-  const [token, setToken] = useState(null);
-  const [userData, setUserData] = useState(null);
+  const [token, setToken] = useState<string | null>(null);
+  const [userData, setUserData] = useState<userDataProps | null>(null);
 
   const value = {
     isLoading,
