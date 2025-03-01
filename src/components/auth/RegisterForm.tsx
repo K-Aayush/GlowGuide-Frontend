@@ -12,7 +12,7 @@ import {
   FormMessage,
 } from "../ui/form";
 import { Input } from "../ui/input";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Select,
   SelectContent,
@@ -23,13 +23,15 @@ import {
 import { useContext, useState } from "react";
 import { EyeIcon, EyeOff } from "lucide-react";
 import { AppContext } from "../../context/AppContext";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { authResponse } from "../../lib/data";
+import { toast } from "sonner";
 
 const RegisterForm = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const { setIsLoading, backendUrl, setToken, setUserData } =
     useContext(AppContext);
+  const navigate = useNavigate();
   const form = useForm<registerFormData>({
     resolver: zodResolver(registerFormSchema),
     defaultValues: {
@@ -68,11 +70,31 @@ const RegisterForm = () => {
         }
       );
 
+      //if success
       if (data.success) {
-        
+        localStorage.setItem("token", data.token);
+        setToken(data.token);
+        setUserData(data.user);
+        toast.success(data.message);
+        if (data.user.role === "USER") {
+          navigate("/userDashboard");
+        } else if (data.user.role === "DERMATOLOGISTS") {
+          navigate("/dermatologistDashboard");
+        } else navigate("/");
+      } else {
+        toast.error(data.message);
       }
     } catch (error) {
-      console.log(error);
+      //Axios error like 400, 401
+      if (error instanceof AxiosError && error.response) {
+        toast.error(error.response.data.message);
+        //unexpected error
+      } else if (error instanceof Error) {
+        toast.error(error.message || "An error occured while registering");
+      } else {
+        //server error
+        toast.error("Internal Server Error");
+      }
     } finally {
       setIsLoading(false);
     }
