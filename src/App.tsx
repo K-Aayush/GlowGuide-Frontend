@@ -4,6 +4,8 @@ import Home from "./pages/Home";
 import Footer from "./components/Footer";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
+import UserDashboard from "./pages/user/Dashboard";
+import DermatologistsDashboard from "./pages/dermatologist/Dashboard";
 
 function App() {
   return (
@@ -14,6 +16,11 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/userDashboard" element={<UserDashboard />} />
+          <Route
+            path="/dermatologistDashboard"
+            element={<DermatologistsDashboard />}
+          />
         </Routes>
         <Footer />
       </div>
