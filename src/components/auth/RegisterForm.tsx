@@ -31,6 +31,7 @@ const RegisterForm = () => {
       email: "",
       password: "",
       name: "",
+      phone: "",
       role: undefined,
     },
     mode: "onChange",
@@ -71,25 +72,50 @@ const RegisterForm = () => {
               className="flex flex-col w-full mt-4 space-y-4"
             >
               <div className="space-y-2">
-                <FormField
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Full Name</FormLabel>
-                      <FormControl>
-                        <Input
-                          required
-                          type="text"
-                          placeholder="Enter your full name"
-                          {...field}
-                        />
-                      </FormControl>
+                <div className="md:space-x-3 md:justify-between md:items-center md:flex max-sm:space-y-2">
+                  <div className="flex-1">
+                    <FormField
+                      control={form.control}
+                      name="name"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Full Name</FormLabel>
+                          <FormControl>
+                            <Input
+                              required
+                              type="text"
+                              placeholder="Enter your full name"
+                              {...field}
+                            />
+                          </FormControl>
 
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <FormField
+                      control={form.control}
+                      name="phone"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Phone No.</FormLabel>
+                          <FormControl>
+                            <Input
+                              required
+                              type="number"
+                              placeholder="Enter your phone Number"
+                              {...field}
+                            />
+                          </FormControl>
+
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                </div>
                 <FormField
                   control={form.control}
                   name="email"

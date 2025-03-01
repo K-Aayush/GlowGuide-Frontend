@@ -33,4 +33,5 @@ export const registerFormSchema = z.object({
   role: z.enum(["USER", "DERMATOLOGISTS"], {
     errorMap: () => ({ message: "you must select a role" }),
   }),
+  phone: z.string().min(3, "Phone Number is required."),
 });
