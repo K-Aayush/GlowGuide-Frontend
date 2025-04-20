@@ -2,6 +2,7 @@ import React, { createContext, useState, useEffect, ReactNode } from "react";
 
 import { UserData, SkinProfileData } from "../lib/types";
 import authService from "../api/services/authService";
+import { toast } from "sonner";
 
 interface AppContextType {
   isLoading: boolean;
@@ -35,6 +36,7 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
 
   const logout = () => {
     authService.logout();
+    toast.success("LogedOut Successful");
     setToken(null);
     setUserData(null);
     setSkinProfile(null);
