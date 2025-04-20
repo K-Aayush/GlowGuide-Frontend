@@ -2,6 +2,7 @@ import HeroSection from "../components/landing/HeroSection";
 import FeaturesSection from "../components/landing/FeaturesSection";
 import CTASection from "../components/landing/CTASection";
 import { HowItWorks } from "../components/landing/HowItWorks";
+import { Testimonials } from "../components/landing/Testimonials";
 
 export default function Home() {
   return (
@@ -9,6 +10,7 @@ export default function Home() {
       <HeroSection />
       <FeaturesSection />
       <HowItWorks />
+      <Testimonials />
       <CTASection />
     </div>
   );
