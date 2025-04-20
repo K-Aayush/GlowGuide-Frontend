@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect, ReactNode } from "react";
-import { SkinConcern, SkinType, Role } from "@prisma/client";
+
 import { UserData, SkinProfileData } from "../lib/types";
 import authService from "../api/services/authService";
 
@@ -17,7 +17,7 @@ interface AppContextType {
   logout: () => void;
 }
 
-export const AppContext = createContext<AppContextType>({} as AppContextType);
+const AppContext = createContext<AppContextType>({} as AppContextType);
 
 export const AppContextProvider = ({ children }: { children: ReactNode }) => {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
