@@ -13,7 +13,7 @@ apiClient.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+      config.headers.Authorization = token;
     }
     return config;
   },
@@ -22,19 +22,22 @@ apiClient.interceptors.request.use(
   }
 );
 
-// Response interceptor for API calls
 apiClient.interceptors.response.use(
-  (response) => {
-    return response;
-  },
+  (response) => response,
   async (error) => {
     const originalRequest = error.config;
 
-    // Handle token expiration or unauthorized errors
-    if (error.response?.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
+    // Don't redirect for login/register errors
+    const isAuthRoute =
+      originalRequest.url.includes("/api/auth/login") ||
+      originalRequest.url.includes("/api/auth/register");
 
-      // Clear localStorage and redirect to login
+    if (
+      error.response?.status === 401 &&
+      !originalRequest._retry &&
+      !isAuthRoute
+    ) {
+      originalRequest._retry = true;
       localStorage.removeItem("token");
       localStorage.removeItem("userData");
       window.location.href = "/login";

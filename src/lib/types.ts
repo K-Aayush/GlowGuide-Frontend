@@ -1,7 +1,7 @@
 enum Role {
-  USER,
-  DERMATOLOGISTS,
-  ADMIN,
+  USER = "USER",
+  DERMATOLOGISTS = "DERMATOLOGISTS",
+  ADMIN = "ADMIN",
 }
 
 enum SkinConcern {

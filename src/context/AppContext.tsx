@@ -17,7 +17,8 @@ interface AppContextType {
   logout: () => void;
 }
 
-const AppContext = createContext<AppContextType>({} as AppContextType);
+// eslint-disable-next-line react-refresh/only-export-components
+export const AppContext = createContext<AppContextType>({} as AppContextType);
 
 export const AppContextProvider = ({ children }: { children: ReactNode }) => {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
