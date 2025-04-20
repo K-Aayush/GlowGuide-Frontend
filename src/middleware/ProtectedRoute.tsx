@@ -1,34 +1,32 @@
 import { Navigate } from "react-router-dom";
 import { useContext } from "react";
 import { AppContext } from "../context/AppContext";
-import { jwtDecode } from "jwt-decode";
 
-interface ProtectedRouteProps {
-  children: React.ReactNode;
-  requiredRole: "USER" | "DERMATOLOGISTS" | "ADMIN";
-}
+const ProtectedRoute = ({
+  element,
+  allowedRoles,
+}: {
+  element: React.ReactNode;
+  allowedRoles: string[];
+}) => {
+  const { isAuthenticated, userData } = useContext(AppContext);
 
-interface DecodedToken {
-  id: string | null;
-  role: string | null;
-}
-
-const ProtectedRoutes = ({ children, requiredRole }: ProtectedRouteProps) => {
-  const { token, isLoading } = useContext(AppContext);
-
-  if (isLoading) return <div>Loading...</div>;
-
-  if (!token) {
-    return <Navigate to={"/"} replace />;
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
   }
 
-  const decoded = jwtDecode<DecodedToken>(token);
-
-  if (!decoded || decoded.role !== requiredRole) {
-    return <Navigate to={"/"} replace />;
+  if (userData && !allowedRoles.includes(userData.role)) {
+    // Redirect to appropriate dashboard based on role
+    if (userData.role === "USER") {
+      return <Navigate to="/user/dashboard" replace />;
+    } else if (userData.role === "DERMATOLOGISTS") {
+      return <Navigate to="/dermatologist/dashboard" replace />;
+    } else if (userData.role === "ADMIN") {
+      return <Navigate to="/admin/dashboard" replace />;
+    }
   }
 
-  return children;
+  return <>{element}</>;
 };
 
-export default ProtectedRoutes;
+export default ProtectedRoute;
