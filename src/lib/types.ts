@@ -1,26 +1,26 @@
-enum Role {
+export enum Role {
   USER = "USER",
   DERMATOLOGISTS = "DERMATOLOGISTS",
   ADMIN = "ADMIN",
 }
 
-enum SkinConcern {
-  ACNE,
-  AGING,
-  PIGMENTATION,
-  SENSITIVITY,
-  DRYNESS,
-  OILINESS,
-  REDNESS,
-  UNEVEN_TEXTURE,
+export enum SkinConcern {
+  ACNE = "ACNE",
+  AGING = "AGING",
+  PIGMENTATION = "PIGMENTATION",
+  SENSITIVITY = "SENSITIVITY",
+  DRYNESS = "DRYNESS",
+  OILINESS = "OILINESS",
+  REDNESS = "REDNESS",
+  UNEVEN_TEXTURE = "UNEVEN_TEXTURE",
 }
 
-enum SkinType {
-  DRY,
-  OILY,
-  COMBINATION,
-  NORMAL,
-  SENSITIVE,
+export enum SkinType {
+  DRY = "DRY",
+  OILY = "OILY",
+  COMBINATION = "COMBINATION",
+  NORMAL = "NORMAL",
+  SENSITIVE = "SENSITIVE",
 }
 
 // User related types
