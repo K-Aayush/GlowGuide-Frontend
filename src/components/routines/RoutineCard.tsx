@@ -56,7 +56,8 @@ export default function RoutineCard({ routine, onDelete }: RoutineCardProps) {
 
       <CardContent className="py-0">
         <p className="text-sm text-foreground/70">
-          {routine.steps.length} {routine.steps.length === 1 ? "step" : "steps"}
+          {routine.steps?.length ?? 0}{" "}
+          {routine.steps?.length === 1 ? "step" : "steps"}
         </p>
       </CardContent>
 

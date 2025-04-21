@@ -18,6 +18,7 @@ import ProtectedRoute from "./middleware/ProtectedRoute";
 import AdminDashboard from "./pages/admin/Dashboard";
 import ProductExplorer from "./pages/user/ProductExplorer";
 import ProgressTracker from "./pages/user/ProgressTracker";
+import Routines from "./pages/user/Routines";
 
 function App() {
   return (
@@ -50,15 +51,7 @@ function App() {
               />
             }
           />
-          <Route
-            path="/user/routines"
-            element={
-              <ProtectedRoute
-                element={<UserRoutines />}
-                allowedRoles={["USER"]}
-              />
-            }
-          />
+         
           <Route
             path="/user/routines/:id"
             element={
@@ -79,6 +72,12 @@ function App() {
             }
           />
           */}
+          <Route
+            path="/user/routines"
+            element={
+              <ProtectedRoute element={<Routines />} allowedRoles={["USER"]} />
+            }
+          />
           <Route
             path="/user/progress"
             element={

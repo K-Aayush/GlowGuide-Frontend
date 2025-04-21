@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../context/AppContext";
 import { Button } from "../../components/ui/button";
 import { Card, CardContent } from "../../components/ui/card";
-import { Camera, Plus, Sparkles, Trash2 } from "lucide-react";
+import { Camera, Plus, Sparkles } from "lucide-react";
 import { ProgressLogData } from "../../lib/types";
 import progressService from "../../api/services/progressService";
 import { toast } from "sonner";

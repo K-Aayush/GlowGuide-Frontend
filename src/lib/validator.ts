@@ -3,6 +3,7 @@ import { z } from "zod";
 export type loginFormData = z.infer<typeof loginFormSchema>;
 export type registerFormData = z.infer<typeof registerFormSchema>;
 export type ProgressLogFormValues = z.infer<typeof progressLogSchema>;
+export type RoutineFormValues = z.infer<typeof routineFormSchema>;
 
 export const loginFormSchema = z.object({
   email: z.string({ required_error: "Email is required" }),
@@ -55,4 +56,14 @@ export const progressLogSchema = z.object({
     })
     .min(1)
     .max(5),
+});
+
+
+export const routineFormSchema = z.object({
+  name: z.string().min(3, {
+    message: "Routine name must be at least 3 characters",
+  }),
+  type: z.string({
+    required_error: "Please select a routine type",
+  }),
 });

@@ -16,19 +16,19 @@ interface AddRoutineStepPayload {
 const routineService = {
   getRoutines: async (): Promise<RoutineData[]> => {
     const { data } = await apiClient.get("/api/routines");
-    return data;
+    return data.routines;
   },
 
   getRoutineById: async (id: string): Promise<RoutineData> => {
     const { data } = await apiClient.get(`/api/routines/${id}`);
-    return data;
+    return data.routine;
   },
 
   createRoutine: async (
     payload: CreateRoutinePayload
   ): Promise<RoutineData> => {
     const { data } = await apiClient.post("/api/routines", payload);
-    return data;
+    return data.routine;
   },
 
   updateRoutine: async (
@@ -36,7 +36,7 @@ const routineService = {
     payload: Partial<CreateRoutinePayload>
   ): Promise<RoutineData> => {
     const { data } = await apiClient.put(`/api/routines/${id}`, payload);
-    return data;
+    return data.routine;
   },
 
   deleteRoutine: async (id: string): Promise<void> => {
@@ -47,7 +47,7 @@ const routineService = {
     payload: AddRoutineStepPayload
   ): Promise<RoutineData> => {
     const { data } = await apiClient.post("/api/routines/steps", payload);
-    return data;
+    return data.step;
   },
 
   deleteRoutineStep: async (stepId: string): Promise<void> => {
