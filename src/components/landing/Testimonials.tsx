@@ -50,7 +50,7 @@ export function Testimonials() {
     <section className="py-20 bg-muted/30">
       <div className="container">
         <div className="max-w-3xl mx-auto mb-16 space-y-4 text-center">
-          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+          <h2 className="text-3xl font-bold tracking-tight text-transparent sm:text-4xl bg-gradient-to-r from-pink-500 to-amber-500 bg-clip-text">
             Loved by Skin Enthusiasts
           </h2>
           <p className="text-lg text-muted-foreground">
