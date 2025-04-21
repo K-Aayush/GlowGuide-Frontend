@@ -16,6 +16,7 @@ import SkinCare101 from "./pages/SkinCare101";
 import AboutUs from "./pages/AboutUs";
 import ProtectedRoute from "./middleware/ProtectedRoute";
 import AdminDashboard from "./pages/admin/Dashboard";
+import ProductExplorer from "./pages/user/ProductExplorer";
 
 function App() {
   return (
@@ -84,6 +85,7 @@ function App() {
               />
             }
           />
+          */}
           <Route
             path="/user/products"
             element={
@@ -92,7 +94,7 @@ function App() {
                 allowedRoles={["USER"]}
               />
             }
-          /> */}
+          />
 
           {/* Dermatologist Routes */}
           <Route
