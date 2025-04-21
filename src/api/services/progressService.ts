@@ -11,14 +11,14 @@ interface CreateProgressLogPayload {
 const progressService = {
   getLogs: async (): Promise<ProgressLogData[]> => {
     const { data } = await apiClient.get("/api/progress");
-    return data;
+    return data.logs;
   },
 
   createLog: async (
     payload: CreateProgressLogPayload
   ): Promise<ProgressLogData> => {
     const { data } = await apiClient.post("/api/progress", payload);
-    return data;
+    return data.log;
   },
 
   deleteLog: async (id: string): Promise<void> => {

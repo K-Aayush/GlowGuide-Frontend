@@ -2,6 +2,7 @@ import { z } from "zod";
 
 export type loginFormData = z.infer<typeof loginFormSchema>;
 export type registerFormData = z.infer<typeof registerFormSchema>;
+export type ProgressLogFormValues = z.infer<typeof progressLogSchema>;
 
 export const loginFormSchema = z.object({
   email: z.string({ required_error: "Email is required" }),
@@ -34,4 +35,24 @@ export const registerFormSchema = z.object({
     errorMap: () => ({ message: "you must select a role" }),
   }),
   phone: z.string().min(3, "Phone Number is required."),
+});
+
+// Form schema
+export const progressLogSchema = z.object({
+  imageUrl: z.string().optional(),
+  notes: z
+    .string()
+    .max(500, {
+      message: "Notes should not exceed 500 characters",
+    })
+    .optional(),
+  concerns: z.string({
+    required_error: "Please select a primary concern",
+  }),
+  rating: z
+    .number({
+      required_error: "Please rate your skin condition",
+    })
+    .min(1)
+    .max(5),
 });
