@@ -55,7 +55,7 @@ const RegisterForm = () => {
         if (data.user.role === "USER") {
           navigate("/userDashboard");
         } else if (data.user.role === "DERMATOLOGISTS") {
-          navigate("/dermatologistDashboard");
+          navigate("/dermatologist/dashboard");
         } else {
           navigate("/");
         }

@@ -51,7 +51,7 @@ const LoginForm = () => {
             navigate("/userDashboard");
             break;
           case "DERMATOLOGISTS":
-            navigate("/dermatologistDashboard");
+            navigate("/dermatologist/dashboard");
             break;
           case "ADMIN":
             navigate("/adminDashboard");
