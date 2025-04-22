@@ -23,14 +23,13 @@ import {
 import { useContext, useState } from "react";
 import { EyeIcon, EyeOff } from "lucide-react";
 import { AppContext } from "../../context/AppContext";
-import axios, { AxiosError } from "axios";
-import { authResponse } from "../../lib/data";
 import { toast } from "sonner";
+import authService from "../../api/services/authService";
+import { AxiosError } from "axios";
 
 const RegisterForm = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const { setIsLoading, backendUrl, setToken, setUserData } =
-    useContext(AppContext);
+  const { setIsLoading, setToken, setUserData } = useContext(AppContext);
   const navigate = useNavigate();
   const form = useForm<registerFormData>({
     resolver: zodResolver(registerFormSchema),
@@ -45,34 +44,11 @@ const RegisterForm = () => {
   });
 
   const handleSubmit = async (values: registerFormData) => {
-    console.log(values);
     try {
       setIsLoading(true);
+      const data = await authService.register(values);
 
-      //creating new formData
-      const formData = new FormData();
-
-      //appending form data
-      formData.append("email", values.email);
-      formData.append("password", values.password);
-      formData.append("phone", values.phone);
-      formData.append("name", values.name);
-      formData.append("role", values.role);
-
-      //calling register api
-      const { data } = await axios.post<authResponse>(
-        `${backendUrl}/api/auth/register`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      //if success
       if (data.success) {
-        localStorage.setItem("token", data.token);
         setToken(data.token);
         setUserData(data.user);
         toast.success(data.message);
@@ -80,25 +56,27 @@ const RegisterForm = () => {
           navigate("/userDashboard");
         } else if (data.user.role === "DERMATOLOGISTS") {
           navigate("/dermatologistDashboard");
-        } else navigate("/");
+        } else {
+          navigate("/");
+        }
       } else {
         toast.error(data.message);
+        console.log(data.message);
       }
     } catch (error) {
-      //Axios error like 400, 401
       if (error instanceof AxiosError && error.response) {
-        toast.error(error.response.data.message);
-        //unexpected error
+        toast.error(error.response.data.message || "Error from server");
       } else if (error instanceof Error) {
-        toast.error(error.message || "An error occured while registering");
+        toast.error(error.message || "Something went wrong");
       } else {
-        //server error
-        toast.error("Internal Server Error");
+        toast.error("Internal server error");
       }
+      console.log(error);
     } finally {
       setIsLoading(false);
     }
   };
+
   return (
     <div className="flex items-center justify-center w-full min-h-screen">
       <div className="flex items-center w-full max-w-sm mx-4 bg-gray-300 border rounded-lg shadow-md md:max-w-screen-lg">

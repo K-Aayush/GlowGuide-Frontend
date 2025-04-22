@@ -1,26 +1,28 @@
-import { Sparkles, Shield, Clock, Users } from 'lucide-react';
-import FeatureCard from './FeatureCard';
+import { Sparkles, Shield, Clock, Users } from "lucide-react";
+import FeatureCard from "./FeatureCard";
 
 const features = [
   {
-    icon: Sparkles,
-    title: 'AI-Powered Analysis',
-    description: 'Get personalized skincare recommendations based on your unique skin profile',
+    icon: <Sparkles className="w-10 h-10 text-amber-500" />,
+    title: "AI-Powered Analysis",
+    description:
+      "Get personalized skincare recommendations based on your unique skin profile",
   },
   {
-    icon: Shield,
-    title: 'Expert Guidance',
-    description: 'Access professional advice from certified dermatologists',
+    icon: <Shield className="w-10 h-10 text-green-500" />,
+    title: "Expert Guidance",
+    description: "Access professional advice from certified dermatologists",
   },
   {
-    icon: Clock,
-    title: 'Progress Tracking',
-    description: "Monitor your skin's improvement over time with detailed analytics",
+    icon: <Clock className="w-10 h-10 text-purple-500" />,
+    title: "Progress Tracking",
+    description:
+      "Monitor your skin's improvement over time with detailed analytics",
   },
   {
-    icon: Users,
-    title: 'Community Support',
-    description: 'Connect with others on their skincare journey',
+    icon: <Users className="w-10 h-10 text-indigo-500" />,
+    title: "Community Support",
+    description: "Connect with others on their skincare journey",
   },
 ];
 
@@ -30,13 +32,15 @@ export default function FeaturesSection() {
       <div className="container px-4 md:px-6">
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
           <div className="space-y-2">
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Features</h2>
+            <h2 className="text-3xl font-bold tracking-tighter text-transparent sm:text-5xl bg-gradient-to-r from-pink-500 to-amber-500 bg-clip-text">
+              Features
+            </h2>
             <p className="max-w-[900px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
               Everything you need to achieve your best skin ever
             </p>
           </div>
         </div>
-        <div className="mx-auto grid max-w-5xl items-center gap-6 py-12 lg:grid-cols-2 lg:gap-8">
+        <div className="grid items-center max-w-5xl gap-6 py-12 mx-auto lg:grid-cols-2 lg:gap-8">
           {features.map((feature) => (
             <FeatureCard key={feature.title} {...feature} />
           ))}

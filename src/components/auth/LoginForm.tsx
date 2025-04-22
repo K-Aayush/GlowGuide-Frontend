@@ -16,14 +16,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
 import { EyeIcon, EyeOff } from "lucide-react";
 import { AppContext } from "../../context/AppContext";
-import axios, { AxiosError } from "axios";
-import { authResponse } from "../../lib/data";
 import { toast } from "sonner";
+import authService from "../../api/services/authService";
 
 const LoginForm = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const { setIsLoading, setUserData, setToken, backendUrl } =
-    useContext(AppContext);
+  const { setIsLoading, setUserData, setToken } = useContext(AppContext);
   const navigate = useNavigate();
   const form = useForm<loginFormData>({
     resolver: zodResolver(loginFormSchema),
@@ -37,51 +35,41 @@ const LoginForm = () => {
   const handleSubmit = async (values: loginFormData) => {
     try {
       setIsLoading(true);
-
-      const loginPayload = {
+      const data = await authService.login({
         email: values.email,
         password: values.password,
-      };
-
-      const { data } = await axios.post<authResponse>(
-        `${backendUrl}/api/auth/login`,
-        loginPayload,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      });
 
       if (data.success) {
-        localStorage.setItem("token", data.token);
         setToken(data.token);
         setUserData(data.user);
         toast.success(data.message);
-        //navigate acc to role
-        if (data.user.role === "USER") {
-          navigate("/userDashboard");
-        } else if (data.user.role === "DERMATOLOGISTS") {
-          navigate("/dermatologistDashboard");
-        } else if (data.user.role === "ADMIN") {
-          navigate("/adminDashboard");
-        } else {
-          navigate("/");
+        console.log(data.user);
+
+        switch (data.user.role) {
+          case "USER":
+            navigate("/userDashboard");
+            break;
+          case "DERMATOLOGISTS":
+            navigate("/dermatologistDashboard");
+            break;
+          case "ADMIN":
+            navigate("/adminDashboard");
+            break;
+          default:
+            navigate("/");
         }
       } else {
         toast.error(data.message);
       }
     } catch (error) {
-      //Axios error
-      if (error instanceof AxiosError && error.response) {
-        toast.error(error.response.data.message);
-        //unexpected error
-      } else if (error instanceof Error) {
-        toast.error(error.message || "An error occured while logging");
-      } else {
-        //Internal server error
-        toast.error("Internal Server Error");
-      }
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "An error occurred while logging in"
+      );
+    } finally {
+      setIsLoading(false);
     }
   };
   return (

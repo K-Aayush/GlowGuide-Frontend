@@ -2,6 +2,9 @@ import { z } from "zod";
 
 export type loginFormData = z.infer<typeof loginFormSchema>;
 export type registerFormData = z.infer<typeof registerFormSchema>;
+export type ProgressLogFormValues = z.infer<typeof progressLogSchema>;
+export type RoutineFormValues = z.infer<typeof routineFormSchema>;
+export type SkinAssessmentFormValues = z.infer<typeof skinAssessmentSchema>;
 
 export const loginFormSchema = z.object({
   email: z.string({ required_error: "Email is required" }),
@@ -34,4 +37,51 @@ export const registerFormSchema = z.object({
     errorMap: () => ({ message: "you must select a role" }),
   }),
   phone: z.string().min(3, "Phone Number is required."),
+});
+
+// Form schema
+export const progressLogSchema = z.object({
+  imageUrl: z.string().optional(),
+  notes: z
+    .string()
+    .max(500, {
+      message: "Notes should not exceed 500 characters",
+    })
+    .optional(),
+  concerns: z.string({
+    required_error: "Please select a primary concern",
+  }),
+  rating: z
+    .number({
+      required_error: "Please rate your skin condition",
+    })
+    .min(1)
+    .max(5),
+});
+
+export const routineFormSchema = z.object({
+  name: z.string().min(3, {
+    message: "Routine name must be at least 3 characters",
+  }),
+  type: z.string({
+    required_error: "Please select a routine type",
+  }),
+});
+
+export const skinAssessmentSchema = z.object({
+  skinType: z.enum(["DRY", "OILY", "COMBINATION", "NORMAL", "SENSITIVE"], {
+    required_error: "Please select a skin type",
+  }),
+  concerns: z.array(z.string()).min(1, {
+    message: "Please select at least one skin concern",
+  }),
+  allergies: z.string().optional(),
+  goals: z
+    .string()
+    .min(10, {
+      message: "Please describe your skincare goals in at least 10 characters",
+    })
+    .max(500, {
+      message: "Goals description should not exceed 500 characters",
+    }),
 });
