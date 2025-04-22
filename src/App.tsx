@@ -19,6 +19,7 @@ import AdminDashboard from "./pages/admin/Dashboard";
 import ProductExplorer from "./pages/user/ProductExplorer";
 import ProgressTracker from "./pages/user/ProgressTracker";
 import Routines from "./pages/user/Routines";
+import SkinAssessment from "./pages/user/SkinAssessment";
 
 function App() {
   return (
@@ -42,15 +43,7 @@ function App() {
               />
             }
           />
-          {/* <Route
-            path="/user/skin-assessment"
-            element={
-              <ProtectedRoute
-                element={<SkinAssessment />}
-                allowedRoles={["USER"]}
-              />
-            }
-          />
+          {/* 
          
           <Route
             path="/user/routines/:id"
@@ -72,6 +65,15 @@ function App() {
             }
           />
           */}
+          <Route
+            path="/user/skin-assessment"
+            element={
+              <ProtectedRoute
+                element={<SkinAssessment />}
+                allowedRoles={["USER"]}
+              />
+            }
+          />
           <Route
             path="/user/routines"
             element={

@@ -137,9 +137,11 @@ export default function Dashboard() {
                   <p className="text-sm font-medium">Top Concern</p>
                   <p className="text-lg">
                     {userProfile.concerns
-                      .toString()
-                      .replace("_", " ")
-                      .toLowerCase()}
+                      ? userProfile.concerns
+                          .toString()
+                          .replace("_", " ")
+                          .toLowerCase()
+                      : "No concerns listed"}
                   </p>
                 </div>
                 {userProfile.goals && (
