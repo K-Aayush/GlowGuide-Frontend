@@ -23,6 +23,18 @@ export enum SkinType {
   SENSITIVE = "SENSITIVE",
 }
 
+export enum NotificationType {
+  APPOINTMENT = "APPOINTMENT",
+  CHAT = "CHAT",
+  SYSTEM = "SYSTEM",
+}
+
+export enum AppointmentStatus {
+  PENDING = "PENDING",
+  CONFIRMED = "CONFIRMED",
+  CANCELLED = "CANCELLED",
+}
+
 // User related types
 export interface UserData {
   id: string;
@@ -31,6 +43,7 @@ export interface UserData {
   role: Role;
   phone?: string;
   image?: string;
+  createdAt: string;
 }
 
 export interface AuthResponse {
@@ -40,22 +53,74 @@ export interface AuthResponse {
   token: string;
 }
 
+// Admin related types
+export interface AdminStats {
+  totalUsers: number;
+  totalDermatologists: number;
+  totalProducts: number;
+  totalAppointments: number;
+}
+
+// Chat related types
+export interface ChatData {
+  id: string;
+  userId: string;
+  dermatologistId: string;
+  user: {
+    id: string;
+    name: string;
+    image?: string;
+  };
+  dermatologist: {
+    id: string;
+    name: string;
+    image?: string;
+  };
+  messages: MessageData[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface MessageData {
+  id: string;
+  chatId: string;
+  senderId: string;
+  content: string;
+  read: boolean;
+  createdAt: string;
+  sender: {
+    id: string;
+    name: string;
+    image?: string;
+  };
+}
+
+// Notification related types
+export interface NotificationData {
+  id: string;
+  userId: string;
+  type: NotificationType;
+  title: string;
+  message: string;
+  read: boolean;
+  createdAt: string;
+}
+
+// AI related types
+export interface AIRecommendation {
+  aiRecommendations: string;
+  matchingProducts: ProductData[];
+}
+
 // Skin profile related types
 export interface SkinProfileData {
   id: string;
   userId: string;
-  skinType: SkinType;
-  concerns: SkinConcern[];
   allergies?: string;
   goals?: string;
   lastAssessment: Date;
-}
-
-export interface SkinAssessmentFormData {
-  skinType: SkinType;
-  concerns: SkinConcern[];
-  allergies?: string;
-  goals?: string;
+  SkinType: { type: SkinType }[];
+  Concerns: { concern: SkinConcern }[];
 }
 
 // Product related types
@@ -68,6 +133,8 @@ export interface ProductData {
   sustainabilityScore: number;
   allergens?: string;
   imageUrl?: string;
+  suitableSkinTypes: { type: SkinType }[];
+  targetConcerns: { concern: SkinConcern }[];
 }
 
 // Routine related types
@@ -103,4 +170,37 @@ export interface ProgressComparisonData {
   before: ProgressLogData;
   after: ProgressLogData;
   improvementPercentage: number;
+}
+
+// Appointment related types
+export interface AppointmentData {
+  id: string;
+  userId: string;
+  dermatologistId: string;
+  date: Date;
+  status: AppointmentStatus;
+  notes?: string;
+  user: UserData;
+  dermatologist: UserData;
+}
+
+// Dermatologist related types
+export interface DermatologistStats {
+  totalPatients: number;
+  newPatientsThisMonth: number;
+  pendingAssessments: number;
+  totalRoutines: number;
+}
+
+export interface DermatologistActivity {
+  type: "routine_created" | "assessment_completed" | "progress_update";
+  date: Date;
+  patient: string;
+  details: string;
+}
+
+export interface Patient extends UserData {
+  skinProfile: SkinProfileData;
+  progressLogs: ProgressLogData[];
+  routines?: RoutineData[];
 }
