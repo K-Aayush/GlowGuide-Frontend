@@ -7,7 +7,6 @@ import { toast } from "sonner";
 import { ProductData } from "../../lib/types";
 import { ProductFormValues } from "../../lib/validator";
 import { ProductForm } from "../../components/admin/ProductForm";
-import { ProductsTable } from "../../components/admin/ProductsTable";
 import productService from "../../api/services/productService";
 import {
   Dialog,
@@ -17,6 +16,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../../components/ui/dialog";
+import { ProductCard } from "../../components/admin/ProductCard";
 
 export default function ManageProducts() {
   const { setIsLoading } = useContext(AppContext);
@@ -50,15 +50,23 @@ export default function ManageProducts() {
     try {
       setIsLoading(true);
       if (editingProduct) {
-        await productService.updateProduct(editingProduct.id, values);
+        const updatedProduct = await productService.updateProduct(
+          editingProduct.id,
+          values
+        );
+        // Update the product in state directly instead of re-fetching
+        setProducts(
+          products.map((p) => (p.id === editingProduct.id ? updatedProduct : p))
+        );
         toast.success("Product updated successfully");
       } else {
-        await productService.createProduct(values);
+        const newProduct = await productService.createProduct(values);
+        // Add the new product to state directly instead of re-fetching
+        setProducts([...products, newProduct]);
         toast.success("Product created successfully");
       }
       setIsProductDialogOpen(false);
       setEditingProduct(null);
-      fetchProducts();
     } catch (error) {
       console.error("Error saving product:", error);
       toast.error("Failed to save product");
@@ -71,8 +79,9 @@ export default function ManageProducts() {
     try {
       setIsLoading(true);
       await productService.deleteProduct(id);
+      // Update the state directly instead of re-fetching
+      setProducts(products.filter((p) => p.id !== id));
       toast.success("Product deleted successfully");
-      fetchProducts();
     } catch (error) {
       console.error("Error deleting product:", error);
       toast.error("Failed to delete product");
@@ -81,8 +90,14 @@ export default function ManageProducts() {
     }
   };
 
+  const filteredProducts = products.filter(
+    (product) =>
+      product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      product.brand.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
-    <div className="container px-4 py-8 mx-auto">
+    <div className="container min-h-screen px-4 py-8 mx-auto">
       <div className="flex flex-col gap-2 mb-8 md:flex-row md:items-center md:justify-between">
         <div>
           <h1 className="text-2xl font-bold md:text-3xl">Manage Products</h1>
@@ -119,7 +134,7 @@ export default function ManageProducts() {
         </Dialog>
       </div>
 
-      <div className="relative mb-4">
+      <div className="relative mb-6">
         <Search className="absolute w-5 h-5 transform -translate-y-1/2 left-3 top-1/2 text-foreground/50" />
         <Input
           className="pl-10"
@@ -129,15 +144,25 @@ export default function ManageProducts() {
         />
       </div>
 
-      <ProductsTable
-        products={products}
-        searchTerm={searchTerm}
-        onEdit={(product) => {
-          setEditingProduct(product);
-          setIsProductDialogOpen(true);
-        }}
-        onDelete={handleDeleteProduct}
-      />
+      {filteredProducts.length === 0 ? (
+        <div className="py-12 text-center">
+          <p className="text-muted-foreground">No products found</p>
+        </div>
+      ) : (
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {filteredProducts.map((product: ProductData) => (
+            <ProductCard
+              key={product.id}
+              product={product}
+              onEdit={(product) => {
+                setEditingProduct(product);
+                setIsProductDialogOpen(true);
+              }}
+              onDelete={handleDeleteProduct}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

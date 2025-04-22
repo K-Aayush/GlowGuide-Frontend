@@ -20,6 +20,8 @@ import ProductExplorer from "./pages/user/ProductExplorer";
 import ProgressTracker from "./pages/user/ProgressTracker";
 import Routines from "./pages/user/Routines";
 import SkinAssessment from "./pages/user/SkinAssessment";
+import ManageProducts from "./pages/admin/ManageProducts";
+import ManageUsers from "./pages/admin/ManageUsers";
 
 function App() {
   return (
@@ -147,7 +149,7 @@ function App() {
               />
             }
           />
-          {/* <Route
+          <Route
             path="/admin/products"
             element={
               <ProtectedRoute
@@ -164,7 +166,7 @@ function App() {
                 allowedRoles={["ADMIN"]}
               />
             }
-          /> */}
+          />
 
           {/* Fallback */}
           <Route path="*" element={<Navigate to="/" replace />} />
