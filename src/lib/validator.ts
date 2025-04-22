@@ -5,6 +5,7 @@ export type registerFormData = z.infer<typeof registerFormSchema>;
 export type ProgressLogFormValues = z.infer<typeof progressLogSchema>;
 export type RoutineFormValues = z.infer<typeof routineFormSchema>;
 export type SkinAssessmentFormValues = z.infer<typeof skinAssessmentSchema>;
+export type ProductFormValues = z.infer<typeof productSchema>;
 
 export const loginFormSchema = z.object({
   email: z.string({ required_error: "Email is required" }),
@@ -84,4 +85,16 @@ export const skinAssessmentSchema = z.object({
     .max(500, {
       message: "Goals description should not exceed 500 characters",
     }),
+});
+
+export const productSchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  brand: z.string().min(1, "Brand is required"),
+  description: z.string().min(10, "Description must be at least 10 characters"),
+  ingredients: z.string().min(1, "Ingredients are required"),
+  sustainabilityScore: z.number().min(1).max(5),
+  allergens: z.string().optional(),
+  skinTypes: z.array(z.string()).min(1, "Select at least one skin type"),
+  concerns: z.array(z.string()).min(1, "Select at least one concern"),
+  image: z.any().optional(),
 });

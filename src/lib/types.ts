@@ -123,6 +123,13 @@ export interface SkinProfileData {
   Concerns: { concern: SkinConcern }[];
 }
 
+export interface SkinAssessmentFormData {
+  allergies?: string;
+  goals?: string;
+  SkinType: { type: SkinType }[];
+  Concerns: { concern: SkinConcern }[];
+}
+
 // Product related types
 export interface ProductData {
   id: string;

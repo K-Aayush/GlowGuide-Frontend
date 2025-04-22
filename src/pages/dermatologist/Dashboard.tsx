@@ -198,9 +198,11 @@ export default function DermatologistDashboard() {
                     <TableRow key={patient.id}>
                       <TableCell>{patient.name}</TableCell>
                       <TableCell>
-                        {patient.skinProfile?.SkinType.map((t) => t.type).join(
-                          ", "
-                        )}
+                        {patient.skinProfile?.SkinType?.length
+                          ? patient.skinProfile.SkinType.map(
+                              (t) => t.type
+                            ).join(", ")
+                          : "N/A"}
                       </TableCell>
                       <TableCell>
                         {new Date(
