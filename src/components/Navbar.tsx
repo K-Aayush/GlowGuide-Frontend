@@ -11,6 +11,8 @@ import {
   Camera,
   Settings,
   Search,
+  MessageSquare,
+  Bot,
 } from "lucide-react";
 import { Button } from "./ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
@@ -22,6 +24,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
+import NotificationCenter from "./notification/NotificationCenter";
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -79,6 +82,16 @@ export default function Navbar() {
           label: "Products",
           icon: <Droplets className="w-5 h-5 mr-2" />,
         },
+        {
+          to: "/user/ai-recommendations",
+          label: "Ai",
+          icon: <Bot className="w-5 h-5 mr-2" />,
+        },
+        {
+          to: "/user/chat",
+          label: "Chat",
+          icon: <MessageSquare className="w-5 h-5 mr-2" />,
+        },
       ];
     }
 
@@ -90,13 +103,13 @@ export default function Navbar() {
           icon: <Home className="w-5 h-5 mr-2" />,
         },
         {
-          to: "/dermatologist/patients",
-          label: "Patients",
-          icon: <UserCircle className="w-5 h-5 mr-2" />,
+          to: "/dermatologist/chat",
+          label: "Chat",
+          icon: <MessageSquare className="w-5 h-5 mr-2" />,
         },
         {
-          to: "/dermatologist/create-routine",
-          label: "Create Routine",
+          to: "/dermatologist/appointments",
+          label: "Appointments",
           icon: <Calendar className="w-5 h-5 mr-2" />,
         },
       ];
@@ -141,7 +154,7 @@ export default function Navbar() {
                   : "/admin/dashboard"
                 : "/"
             }
-            className="flex items-center mr-6 space-x-2"
+            className="flex items-center space-x-2 mr-4git"
           >
             <Sparkles className="w-6 h-6 text-primary" />
             <span className="hidden text-xl font-bold sm:inline-block">
@@ -167,6 +180,7 @@ export default function Navbar() {
         </div>
 
         <div className="flex items-center space-x-4">
+          {isAuthenticated && <NotificationCenter />}
           {isAuthenticated ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
