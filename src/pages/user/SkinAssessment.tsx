@@ -27,11 +27,8 @@ import { Textarea } from "../../components/ui/textarea";
 import { Checkbox } from "../../components/ui/checkbox";
 import skinProfileService from "../../api/services/skinService";
 import { toast } from "sonner";
-import { SkinConcern, SkinType } from "../../lib/types";
-import {
-  SkinAssessmentFormValues,
-  skinAssessmentSchema,
-} from "../../lib/validator";
+import { skinAssessmentSchema } from "../../lib/validator";
+import { SkinAssessmentFormData, SkinConcern } from "../../lib/types";
 
 export default function SkinAssessment() {
   const { setIsLoading, setSkinProfile } = useContext(AppContext);
@@ -40,7 +37,7 @@ export default function SkinAssessment() {
   const totalSteps = 3;
 
   // Initialize form
-  const form = useForm<SkinAssessmentFormValues>({
+  const form = useForm<SkinAssessmentFormData>({
     resolver: zodResolver(skinAssessmentSchema),
     defaultValues: {
       skinType: undefined,
@@ -51,32 +48,18 @@ export default function SkinAssessment() {
   });
 
   // Handle form submission
-  const onSubmit = async (values: SkinAssessmentFormValues) => {
+  const onSubmit = async (values: SkinAssessmentFormData) => {
     try {
       setIsLoading(true);
-
-      // Convert form values to the format expected by the API
-      const profileData = {
-        skinType: values.skinType as SkinType,
-        concerns: values.concerns as SkinConcern[],
-        allergies: values.allergies,
-        goals: values.goals,
-      };
-
-      // Send data to the server
-      const response = await skinProfileService.createSkinProfile(profileData);
-
-      // Update context
+      const response = await skinProfileService.createSkinProfile(values);
       setSkinProfile(response);
-
-      // Show success message
       toast.success("Skin assessment completed successfully!");
-
-      // Redirect to dashboard
       navigate("/user/dashboard");
     } catch (error) {
       console.error("Error saving skin profile:", error);
-      toast.error("Failed to save your skin profile. Please try again.");
+      toast.error(
+        error.response?.data?.message || "Failed to save your skin profile"
+      );
     } finally {
       setIsLoading(false);
     }
@@ -189,7 +172,7 @@ export default function SkinAssessment() {
                         <FormControl>
                           <RadioGroup
                             onValueChange={field.onChange}
-                            defaultValue={field.value}
+                            defaultValue={field.value?.[0]?.type || ""}
                             className="space-y-3"
                           >
                             {skinTypeOptions.map((option) => (
@@ -244,16 +227,18 @@ export default function SkinAssessment() {
                             >
                               <FormControl>
                                 <Checkbox
-                                  checked={field.value?.includes(item.id)}
+                                  checked={field.value?.some(
+                                    (value) => value.concern === item.id
+                                  )}
                                   onCheckedChange={(checked) => {
                                     return checked
                                       ? field.onChange([
                                           ...field.value,
-                                          item.id,
+                                          { concern: item.id as SkinConcern },
                                         ])
                                       : field.onChange(
                                           field.value?.filter(
-                                            (value) => value !== item.id
+                                            (value) => value.concern !== item.id
                                           )
                                         );
                                   }}

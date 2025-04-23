@@ -119,15 +119,15 @@ export interface SkinProfileData {
   allergies?: string;
   goals?: string;
   lastAssessment: Date;
-  SkinType: { type: SkinType }[];
-  Concerns: { concern: SkinConcern }[];
+  skinType: { type: SkinType }[];
+  concerns: { concern: SkinConcern }[];
 }
 
 export interface SkinAssessmentFormData {
   allergies?: string;
   goals?: string;
-  SkinType: { type: SkinType }[];
-  Concerns: { concern: SkinConcern }[];
+  skinType: { type: SkinType }[];
+  concerns: { concern: SkinConcern }[];
 }
 
 // Product related types
