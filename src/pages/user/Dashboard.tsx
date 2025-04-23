@@ -131,7 +131,16 @@ export default function Dashboard() {
               <div className="space-y-2">
                 <div>
                   <p className="text-sm font-medium">Skin Type</p>
-                  <p className="text-lg">{userProfile.skinType}</p>
+                  <p className="text-lg">
+                    {userProfile.skinType && userProfile.skinType.length > 0
+                      ? userProfile.skinType.map((skin, index) => (
+                          <span key={index}>
+                            {skin.type}
+                            {index < userProfile.skinType.length - 1 && ", "}
+                          </span>
+                        ))
+                      : "No skin type available"}
+                  </p>
                 </div>
                 <div>
                   <p className="text-sm font-medium">Top Concern</p>

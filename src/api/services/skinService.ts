@@ -10,14 +10,30 @@ const skinProfileService = {
   createSkinProfile: async (
     profileData: SkinAssessmentFormData
   ): Promise<SkinProfileData> => {
-    const { data } = await apiClient.post("/api/skinProfile", profileData);
+    // Transform the data to match backend expectations
+    const payload = {
+      skinType: [profileData.skinType],
+      concerns: profileData.concerns,
+      allergies: profileData.allergies || "",
+      goals: profileData.goals,
+    };
+
+    const { data } = await apiClient.post("/api/skinProfile", payload);
     return data.profile;
   },
 
   updateSkinProfile: async (
     profileData: Partial<SkinAssessmentFormData>
   ): Promise<SkinProfileData> => {
-    const { data } = await apiClient.put("/api/skinProfile", profileData);
+    // Transform the data to match backend expectations
+    const payload = {
+      skinType: profileData.skinType ? [profileData.skinType] : undefined,
+      concerns: profileData.concerns,
+      allergies: profileData.allergies,
+      goals: profileData.goals,
+    };
+
+    const { data } = await apiClient.put("/api/skinProfile", payload);
     return data.profile;
   },
 };
