@@ -20,6 +20,12 @@ import ProductExplorer from "./pages/user/ProductExplorer";
 import ProgressTracker from "./pages/user/ProgressTracker";
 import Routines from "./pages/user/Routines";
 import SkinAssessment from "./pages/user/SkinAssessment";
+import ManageProducts from "./pages/admin/ManageProducts";
+import ManageUsers from "./pages/admin/ManageUsers";
+import Chat from "./pages/dermatologist/Chat";
+import UserChat from "./pages/user/Chat";
+// import Appointments from "./pages/dermatologist/Appointments";
+import AIRecommendations from "./pages/user/AIRecommendations";
 
 function App() {
   return (
@@ -33,6 +39,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/skincare-101" element={<SkinCare101 />} />
           <Route path="/about-us" element={<AboutUs />} />
+
           {/* User Routes */}
           <Route
             path="/user/dashboard"
@@ -43,28 +50,6 @@ function App() {
               />
             }
           />
-          {/* 
-         
-          <Route
-            path="/user/routines/:id"
-            element={
-              <ProtectedRoute
-                element={<RoutineDetail />}
-                allowedRoles={["USER"]}
-              />
-            }
-          />
-          
-          <Route
-            path="/user/profile"
-            element={
-              <ProtectedRoute
-                element={<UserProfile />}
-                allowedRoles={["USER"]}
-              />
-            }
-          />
-          */}
           <Route
             path="/user/skin-assessment"
             element={
@@ -98,6 +83,21 @@ function App() {
               />
             }
           />
+          <Route
+            path="/user/chat"
+            element={
+              <ProtectedRoute element={<UserChat />} allowedRoles={["USER"]} />
+            }
+          />
+          <Route
+            path="/user/ai-recommendations"
+            element={
+              <ProtectedRoute
+                element={<AIRecommendations />}
+                allowedRoles={["USER"]}
+              />
+            }
+          />
 
           {/* Dermatologist Routes */}
           <Route
@@ -109,29 +109,20 @@ function App() {
               />
             }
           />
+          <Route
+            path="/dermatologist/chat"
+            element={
+              <ProtectedRoute
+                element={<Chat />}
+                allowedRoles={["DERMATOLOGISTS"]}
+              />
+            }
+          />
           {/* <Route
-            path="/dermatologist/patients"
+            path="/dermatologist/appointments"
             element={
               <ProtectedRoute
-                element={<PatientList />}
-                allowedRoles={["DERMATOLOGISTS"]}
-              />
-            }
-          />
-          <Route
-            path="/dermatologist/patients/:id"
-            element={
-              <ProtectedRoute
-                element={<PatientDetail />}
-                allowedRoles={["DERMATOLOGISTS"]}
-              />
-            }
-          />
-          <Route
-            path="/dermatologist/create-routine"
-            element={
-              <ProtectedRoute
-                element={<CreateRoutine />}
+                element={<Appointments />}
                 allowedRoles={["DERMATOLOGISTS"]}
               />
             }
@@ -147,7 +138,7 @@ function App() {
               />
             }
           />
-          {/* <Route
+          <Route
             path="/admin/products"
             element={
               <ProtectedRoute
@@ -164,7 +155,7 @@ function App() {
                 allowedRoles={["ADMIN"]}
               />
             }
-          /> */}
+          />
 
           {/* Fallback */}
           <Route path="*" element={<Navigate to="/" replace />} />
