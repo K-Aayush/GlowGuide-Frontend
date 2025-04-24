@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -27,35 +27,48 @@ import { Textarea } from "../../components/ui/textarea";
 import { Checkbox } from "../../components/ui/checkbox";
 import skinProfileService from "../../api/services/skinService";
 import { toast } from "sonner";
-import { skinAssessmentSchema } from "../../lib/validator";
-import { SkinAssessmentFormData, SkinConcern } from "../../lib/types";
+import {
+  SkinAssessmentFormValues,
+  skinAssessmentSchema,
+} from "../../lib/validator";
+import { SkinProfileData } from "../../lib/types";
 
 export default function SkinAssessment() {
-  const { setIsLoading, setSkinProfile } = useContext(AppContext);
+  const { setIsLoading, setSkinProfile, skinProfile } = useContext(AppContext);
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const totalSteps = 3;
 
-  // Initialize form
-  const form = useForm<SkinAssessmentFormData>({
+  // Initialize form with existing profile data if available
+  const form = useForm<SkinAssessmentFormValues>({
     resolver: zodResolver(skinAssessmentSchema),
     defaultValues: {
-      skinType: undefined,
-      concerns: [],
-      allergies: "",
-      goals: "",
+      skinType: skinProfile?.SkinType?.[0]?.type || undefined,
+      concerns: skinProfile?.Concerns?.map((c) => c.concern) || [],
+      allergies: skinProfile?.allergies || "",
+      goals: skinProfile?.goals || "",
     },
   });
 
   // Handle form submission
-  const onSubmit = async (values: SkinAssessmentFormData) => {
+  const onSubmit = async (values: SkinAssessmentFormValues) => {
     try {
       setIsLoading(true);
-      const response = await skinProfileService.createSkinProfile(values);
+      let response: SkinProfileData;
+
+      if (skinProfile) {
+        // Update existing profile
+        response = await skinProfileService.updateSkinProfile(values);
+        toast.success("Skin profile updated successfully!");
+      } else {
+        // Create new profile
+        response = await skinProfileService.createSkinProfile(values);
+        toast.success("Skin assessment completed successfully!");
+      }
+
       setSkinProfile(response);
-      toast.success("Skin assessment completed successfully!");
       navigate("/user/dashboard");
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error saving skin profile:", error);
       toast.error(
         error.response?.data?.message || "Failed to save your skin profile"
@@ -129,9 +142,13 @@ export default function SkinAssessment() {
   return (
     <div className="container max-w-3xl px-4 py-10 mx-auto">
       <div className="flex flex-col items-center mb-8 text-center">
-        <h1 className="mb-2 text-3xl font-bold">Skin Assessment</h1>
+        <h1 className="mb-2 text-3xl font-bold">
+          {skinProfile ? "Update Skin Profile" : "Skin Assessment"}
+        </h1>
         <p className="text-foreground/70">
-          Help us understand your skin to provide personalized recommendations
+          {skinProfile
+            ? "Update your skin profile to keep your recommendations accurate"
+            : "Help us understand your skin to provide personalized recommendations"}
         </p>
 
         {/* Progress indicator */}
@@ -172,7 +189,7 @@ export default function SkinAssessment() {
                         <FormControl>
                           <RadioGroup
                             onValueChange={field.onChange}
-                            defaultValue={field.value?.[0]?.type || ""}
+                            defaultValue={field.value}
                             className="space-y-3"
                           >
                             {skinTypeOptions.map((option) => (
@@ -227,20 +244,24 @@ export default function SkinAssessment() {
                             >
                               <FormControl>
                                 <Checkbox
-                                  checked={field.value?.some(
-                                    (value) => value.concern === item.id
-                                  )}
+                                  checked={field.value?.includes(item.id)}
                                   onCheckedChange={(checked) => {
-                                    return checked
-                                      ? field.onChange([
-                                          ...field.value,
-                                          { concern: item.id as SkinConcern },
-                                        ])
-                                      : field.onChange(
-                                          field.value?.filter(
-                                            (value) => value.concern !== item.id
-                                          )
-                                        );
+                                    const currentConcerns = [
+                                      ...(field.value || []),
+                                    ];
+
+                                    if (checked) {
+                                      field.onChange([
+                                        ...currentConcerns,
+                                        item.id,
+                                      ]);
+                                    } else {
+                                      field.onChange(
+                                        currentConcerns.filter(
+                                          (concern) => concern !== item.id
+                                        )
+                                      );
+                                    }
                                   }}
                                 />
                               </FormControl>
@@ -337,7 +358,9 @@ export default function SkinAssessment() {
                   Next
                 </Button>
               ) : (
-                <Button type="submit">Complete Assessment</Button>
+                <Button type="submit">
+                  {skinProfile ? "Update Profile" : "Complete Assessment"}
+                </Button>
               )}
             </CardFooter>
           </form>

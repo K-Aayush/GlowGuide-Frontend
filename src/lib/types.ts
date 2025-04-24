@@ -4,23 +4,36 @@ export enum Role {
   ADMIN = "ADMIN",
 }
 
-export enum SkinConcern {
-  ACNE = "ACNE",
-  AGING = "AGING",
-  PIGMENTATION = "PIGMENTATION",
-  SENSITIVITY = "SENSITIVITY",
-  DRYNESS = "DRYNESS",
-  OILINESS = "OILINESS",
-  REDNESS = "REDNESS",
-  UNEVEN_TEXTURE = "UNEVEN_TEXTURE",
+export type SkinConcern =
+  | "ACNE"
+  | "AGING"
+  | "PIGMENTATION"
+  | "SENSITIVITY"
+  | "DRYNESS"
+  | "OILINESS"
+  | "REDNESS"
+  | "UNEVEN_TEXTURE";
+
+export type SkinType = "DRY" | "OILY" | "COMBINATION" | "NORMAL" | "SENSITIVE";
+
+export interface SkinTypeObject {
+  type: SkinType;
 }
 
-export enum SkinType {
-  DRY = "DRY",
-  OILY = "OILY",
-  COMBINATION = "COMBINATION",
-  NORMAL = "NORMAL",
-  SENSITIVE = "SENSITIVE",
+export interface SkinConcernObject {
+  concern: SkinConcern;
+}
+
+export interface SkinProfileData {
+  id?: string;
+  userId?: string;
+  SkinType: SkinTypeObject[];
+  Concerns: SkinConcernObject[];
+  allergies?: string;
+  goals?: string;
+  lastAssessment?: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export enum NotificationType {
@@ -110,17 +123,6 @@ export interface NotificationData {
 export interface AIRecommendation {
   aiRecommendations: string;
   matchingProducts: ProductData[];
-}
-
-// Skin profile related types
-export interface SkinProfileData {
-  id: string;
-  userId: string;
-  allergies?: string;
-  goals?: string;
-  lastAssessment: Date;
-  skinType: { type: SkinType }[];
-  concerns: { concern: SkinConcern }[];
 }
 
 export interface SkinAssessmentFormData {
