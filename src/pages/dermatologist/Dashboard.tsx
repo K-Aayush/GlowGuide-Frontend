@@ -113,7 +113,7 @@ export default function DermatologistDashboard() {
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 gap-6 mb-8 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-6 mb-8 sm:grid-cols-2 ">
         <Card>
           <CardContent className="flex items-center gap-4 p-6">
             <Users className="w-8 h-8 text-blue-500" />
@@ -133,30 +133,6 @@ export default function DermatologistDashboard() {
               <p className="text-sm text-foreground/70">New This Month</p>
               <h3 className="text-2xl font-bold">
                 {stats?.newPatientsThisMonth || 0}
-              </h3>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="flex items-center gap-4 p-6">
-            <ClipboardList className="w-8 h-8 text-purple-500" />
-            <div>
-              <p className="text-sm text-foreground/70">Pending Assessments</p>
-              <h3 className="text-2xl font-bold">
-                {stats?.pendingAssessments || 0}
-              </h3>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="flex items-center gap-4 p-6">
-            <Calendar className="w-8 h-8 text-orange-500" />
-            <div>
-              <p className="text-sm text-foreground/70">Total Routines</p>
-              <h3 className="text-2xl font-bold">
-                {stats?.totalRoutines || 0}
               </h3>
             </div>
           </CardContent>
