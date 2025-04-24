@@ -43,7 +43,6 @@ export interface ProgressLogFormValues {
   rating: number;
 }
 
-
 export interface ProgressLogResponse {
   success: boolean;
   message?: string;
@@ -148,6 +147,8 @@ export interface SkinAssessmentFormData {
 
 // Product related types
 export interface ProductData {
+  targetConcerns: any;
+  suitableSkinTypes: any;
   id: string;
   name: string;
   brand: string;
@@ -156,6 +157,7 @@ export interface ProductData {
   sustainabilityScore: number;
   allergens?: string | null;
   imageUrl?: string | null;
+  price: number;
   createdAt: Date;
   updatedAt: Date;
 }

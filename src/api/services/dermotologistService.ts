@@ -3,6 +3,7 @@ import {
   DermatologistStats,
   Patient,
   DermatologistActivity,
+  UserData,
 } from "../../lib/types";
 
 const dermotologistService = {
@@ -24,6 +25,11 @@ const dermotologistService = {
   getRecentActivity: async (): Promise<DermatologistActivity[]> => {
     const { data } = await apiClient.get("/api/dermotologist/activity");
     return data.activities;
+  },
+
+  getDermatologists: async (): Promise<UserData[]> => {
+    const { data } = await apiClient.get("/api/user/dermotologist");
+    return data.users;
   },
 };
 

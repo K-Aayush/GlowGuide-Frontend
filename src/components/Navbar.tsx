@@ -92,6 +92,11 @@ export default function Navbar() {
           label: "Chat",
           icon: <MessageSquare className="w-5 h-5 mr-2" />,
         },
+        {
+          to: "/user/appointments",
+          label: "Appointments",
+          icon: <Calendar className="w-5 h-5 mr-2" />,
+        },
       ];
     }
 

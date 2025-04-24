@@ -126,4 +126,5 @@ export const productSchema = z.object({
   skinTypes: z.array(z.string()).min(1, "Select at least one skin type"),
   concerns: z.array(z.string()).min(1, "Select at least one concern"),
   image: z.any().optional(),
+  price: z.number().gte(5, "Amount must be atleast 5").positive(),
 });
