@@ -26,6 +26,7 @@ import {
   Search,
   Clock,
   ArrowRight,
+  Activity,
 } from "lucide-react";
 import { toast } from "sonner";
 import dermotologistService from "../../api/services/dermotologistService";
@@ -199,9 +200,11 @@ export default function DermatologistDashboard() {
                       <TableCell>{patient.name}</TableCell>
                       <TableCell>{patient.email}</TableCell>
                       <TableCell>
-                        {new Date(
-                          patient.skinProfile?.lastAssessment || ""
-                        ).toLocaleDateString()}
+                        {patient.skinProfile?.lastAssessment
+                          ? new Date(
+                              patient.skinProfile.lastAssessment
+                            ).toLocaleDateString()
+                          : "No assessment"}
                       </TableCell>
                       <TableCell>
                         <Button
@@ -230,32 +233,48 @@ export default function DermatologistDashboard() {
         {/* Recent Activity */}
         <Card className="md:col-span-1">
           <CardHeader>
-            <CardTitle>Recent Activity</CardTitle>
-            <CardDescription>Latest updates from your patients</CardDescription>
+            <div className="flex items-center justify-between">
+              <div>
+                <CardTitle className="flex items-center gap-2">
+                  <Activity className="w-5 h-5 text-primary" />
+                  Recent Activity
+                </CardTitle>
+                <CardDescription>
+                  Latest updates from your patients
+                </CardDescription>
+              </div>
+            </div>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {activities.map((activity, index) => (
-                <div
-                  key={index}
-                  className="flex items-start gap-4 p-3 transition-colors border rounded-lg hover:bg-muted/50"
-                >
-                  <div className="p-2 rounded-full bg-muted">
-                    {getActivityIcon(activity.type)}
-                  </div>
-                  <div className="flex-1 space-y-1">
-                    <p className="text-sm font-medium">{activity.details}</p>
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm text-foreground/70">
-                        {activity.patient}
-                      </span>
-                      <span className="text-xs text-foreground/50">
-                        {new Date(activity.date).toLocaleDateString()}
-                      </span>
+              {activities.length === 0 ? (
+                <div className="py-8 text-center text-foreground/70">
+                  <Clock className="w-12 h-12 mx-auto mb-2 text-foreground/30" />
+                  <p>No recent activity</p>
+                </div>
+              ) : (
+                activities.map((activity, index) => (
+                  <div
+                    key={index}
+                    className="flex items-start gap-4 p-3 transition-colors border rounded-lg hover:bg-muted/50"
+                  >
+                    <div className="p-2 rounded-full bg-muted">
+                      {getActivityIcon(activity.type)}
+                    </div>
+                    <div className="flex-1 space-y-1">
+                      <p className="text-sm font-medium">{activity.details}</p>
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm text-foreground/70">
+                          {activity.patient}
+                        </span>
+                        <span className="text-xs text-foreground/50">
+                          {new Date(activity.date).toLocaleDateString()}
+                        </span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))
+              )}
             </div>
           </CardContent>
         </Card>
