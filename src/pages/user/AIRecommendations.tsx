@@ -39,44 +39,59 @@ export default function AIRecommendations() {
 
       {recommendations ? (
         <div className="space-y-8">
+          {/* AI Analysis Text */}
           <Card>
             <CardContent className="p-6">
               <h2 className="flex items-center mb-4 text-xl font-semibold">
                 <Sparkles className="w-5 h-5 mr-2 text-primary" />
                 AI Analysis
               </h2>
-              <p className="whitespace-pre-line">
-                {recommendations.aiRecommendations}
-              </p>
+              {recommendations.aiRecommendations ? (
+                <p className="whitespace-pre-line">
+                  {recommendations.aiRecommendations}
+                </p>
+              ) : (
+                <p className="text-foreground/70">
+                  No analysis available at the moment.
+                </p>
+              )}
             </CardContent>
           </Card>
 
+          {/* Product Suggestions */}
           <div>
             <h2 className="mb-4 text-xl font-semibold">Recommended Products</h2>
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {recommendations.matchingProducts.map((product) => (
-                <Card key={product.id} className="overflow-hidden">
-                  {product.imageUrl && (
-                    <div className="aspect-square bg-muted">
-                      <img
-                        src={product.imageUrl}
-                        alt={product.name}
-                        className="object-cover w-full h-full"
-                      />
-                    </div>
-                  )}
-                  <CardContent className="p-4">
-                    <h3 className="font-semibold">{product.name}</h3>
-                    <p className="mb-2 text-sm text-foreground/70">
-                      {product.brand}
-                    </p>
-                    <p className="text-sm line-clamp-2">
-                      {product.description}
-                    </p>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+            {recommendations.matchingProducts &&
+            recommendations.matchingProducts.length > 0 ? (
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {recommendations.matchingProducts.map((product) => (
+                  <Card key={product.id} className="overflow-hidden">
+                    {product.imageUrl && (
+                      <div className="aspect-square bg-muted">
+                        <img
+                          src={product.imageUrl}
+                          alt={product.name}
+                          className="object-cover w-full h-full"
+                        />
+                      </div>
+                    )}
+                    <CardContent className="p-4">
+                      <h3 className="font-semibold">{product.name}</h3>
+                      <p className="mb-2 text-sm text-foreground/70">
+                        {product.brand}
+                      </p>
+                      <p className="text-sm line-clamp-2">
+                        {product.description}
+                      </p>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            ) : (
+              <p className="text-foreground/70">
+                No matching products found yet.
+              </p>
+            )}
           </div>
         </div>
       ) : (

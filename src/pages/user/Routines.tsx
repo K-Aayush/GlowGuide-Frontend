@@ -40,6 +40,9 @@ export default function Routines() {
   const [routines, setRoutines] = useState<RoutineData[]>([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isLocalLoading, setIsLocalLoading] = useState(true);
+  const [editingRoutine, setEditingRoutine] = useState<RoutineData | null>(
+    null
+  );
 
   // Initialize form
   const form = useForm<RoutineFormValues>({
@@ -70,22 +73,44 @@ export default function Routines() {
     fetchRoutines();
   }, [setIsLoading]);
 
-  // Create new routine
+  // Handle edit routine
+  const handleEditRoutine = (routine: RoutineData) => {
+    setEditingRoutine(routine);
+    form.reset({
+      name: routine.name,
+      type: routine.type,
+    });
+    setIsDialogOpen(true);
+  };
+
+  // Create or update routine
   const onSubmit = async (values: RoutineFormValues) => {
     try {
       setIsLoading(true);
-      const newRoutine = await routineService.createRoutine({
-        name: values.name,
-        type: values.type,
-      });
-
-      setRoutines([...routines, newRoutine]);
+      if (editingRoutine) {
+        // Update existing routine
+        const updatedRoutine = await routineService.updateRoutine(
+          editingRoutine.id,
+          values
+        );
+        setRoutines(
+          routines.map((r) => (r.id === editingRoutine.id ? updatedRoutine : r))
+        );
+        toast.success("Routine updated successfully!");
+      } else {
+        // Create new routine
+        const newRoutine = await routineService.createRoutine(values);
+        setRoutines([...routines, newRoutine]);
+        toast.success("Routine created successfully!");
+      }
       setIsDialogOpen(false);
+      setEditingRoutine(null);
       form.reset();
-      toast.success("Routine created successfully!");
     } catch (error) {
-      console.error("Error creating routine:", error);
-      toast.error("Failed to create routine");
+      console.error("Error saving routine:", error);
+      toast.error(
+        editingRoutine ? "Failed to update routine" : "Failed to create routine"
+      );
     } finally {
       setIsLoading(false);
     }
@@ -104,6 +129,18 @@ export default function Routines() {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  // Handle dialog close
+  const handleDialogClose = (open: boolean) => {
+    if (!open) {
+      setEditingRoutine(null);
+      form.reset({
+        name: "",
+        type: "",
+      });
+    }
+    setIsDialogOpen(open);
   };
 
   // Routine types
@@ -136,7 +173,7 @@ export default function Routines() {
             Create and manage your personalized skincare regimens
           </p>
         </div>
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <Dialog open={isDialogOpen} onOpenChange={handleDialogClose}>
           <DialogTrigger asChild>
             <Button>
               <Plus className="w-4 h-4 mr-2" />
@@ -145,9 +182,13 @@ export default function Routines() {
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Create New Routine</DialogTitle>
+              <DialogTitle>
+                {editingRoutine ? "Edit Routine" : "Create New Routine"}
+              </DialogTitle>
               <DialogDescription>
-                Add a new skincare routine to your collection.
+                {editingRoutine
+                  ? "Update your skincare routine"
+                  : "Add a new skincare routine to your collection."}
               </DialogDescription>
             </DialogHeader>
             <Form {...form}>
@@ -199,7 +240,9 @@ export default function Routines() {
                   )}
                 />
                 <DialogFooter>
-                  <Button type="submit">Create Routine</Button>
+                  <Button type="submit">
+                    {editingRoutine ? "Update Routine" : "Create Routine"}
+                  </Button>
                 </DialogFooter>
               </form>
             </Form>
@@ -225,6 +268,7 @@ export default function Routines() {
             <RoutineCard
               key={routine.id}
               routine={routine}
+              onEdit={() => handleEditRoutine(routine)}
               onDelete={handleDeleteRoutine}
             />
           ))}
