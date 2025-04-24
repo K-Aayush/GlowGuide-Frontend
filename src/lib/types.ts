@@ -36,6 +36,20 @@ export interface SkinProfileData {
   updatedAt?: Date;
 }
 
+export interface ProgressLogFormValues {
+  image?: File;
+  notes?: string;
+  concerns: string;
+  rating: number;
+}
+
+
+export interface ProgressLogResponse {
+  success: boolean;
+  message?: string;
+  log?: ProgressLogData;
+}
+
 export enum NotificationType {
   APPOINTMENT = "APPOINTMENT",
   CHAT = "CHAT",

@@ -1,8 +1,12 @@
 import apiClient from "../apiClient";
-import { ProgressLogData, ProgressComparisonData } from "../../lib/types";
+import {
+  ProgressLogData,
+  ProgressComparisonData,
+  ProgressLogResponse,
+} from "../../lib/types";
 
 interface CreateProgressLogPayload {
-  imageUrl?: string;
+  image?: File;
   notes?: string;
   concerns: string;
   rating: number;
@@ -17,7 +21,31 @@ const progressService = {
   createLog: async (
     payload: CreateProgressLogPayload
   ): Promise<ProgressLogData> => {
-    const { data } = await apiClient.post("/api/progress", payload);
+    const formData = new FormData();
+
+    if (payload.image) {
+      formData.append("image", payload.image);
+    }
+    if (payload.notes) {
+      formData.append("notes", payload.notes);
+    }
+    formData.append("concerns", payload.concerns);
+    formData.append("rating", String(payload.rating));
+
+    const { data } = await apiClient.post<ProgressLogResponse>(
+      "/api/progress",
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+
+    if (!data.success || !data.log) {
+      throw new Error(data.message || "Failed to create progress log");
+    }
+
     return data.log;
   },
 

@@ -3,7 +3,7 @@ import { AppContext } from "../../context/AppContext";
 import { Button } from "../../components/ui/button";
 import { Card, CardContent } from "../../components/ui/card";
 import { Camera, Plus, Sparkles } from "lucide-react";
-import { ProgressLogData } from "../../lib/types";
+import { ProgressLogData, ProgressLogFormValues } from "../../lib/types";
 import progressService from "../../api/services/progressService";
 import { toast } from "sonner";
 import {
@@ -24,6 +24,7 @@ import {
   FormMessage,
 } from "../../components/ui/form";
 import { Textarea } from "../../components/ui/textarea";
+import { Input } from "../../components/ui/input";
 import {
   Select,
   SelectContent,
@@ -33,7 +34,7 @@ import {
 } from "../../components/ui/select";
 import { Slider } from "../../components/ui/slider";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { progressLogSchema, ProgressLogFormValues } from "../../lib/validator";
+import { progressLogSchema } from "../../lib/validator";
 import { useForm } from "react-hook-form";
 
 export default function ProgressTracker() {
@@ -48,12 +49,20 @@ export default function ProgressTracker() {
   const form = useForm<ProgressLogFormValues>({
     resolver: zodResolver(progressLogSchema),
     defaultValues: {
-      imageUrl: "",
+      image: undefined,
       notes: "",
       concerns: "",
       rating: 3,
     },
   });
+
+  // Handle image change
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      form.setValue("image", file);
+    }
+  };
 
   // Fetch progress logs
   const fetchLogs = async () => {
@@ -78,9 +87,14 @@ export default function ProgressTracker() {
   // Create new progress log
   const onSubmit = async (values: ProgressLogFormValues) => {
     try {
+      if (!values.concerns || !values.rating) {
+        toast.error("Please select a concern and rating");
+        return;
+      }
+
       setIsLoading(true);
       const newLog = await progressService.createLog({
-        imageUrl: values.imageUrl,
+        image: values.image,
         notes: values.notes,
         concerns: values.concerns,
         rating: values.rating,
@@ -89,7 +103,7 @@ export default function ProgressTracker() {
       setLogs([newLog, ...logs]);
       setIsDialogOpen(false);
       form.reset({
-        imageUrl: "",
+        image: undefined,
         notes: "",
         concerns: "",
         rating: 3,
@@ -97,7 +111,9 @@ export default function ProgressTracker() {
       toast.success("Progress log added successfully!");
     } catch (error) {
       console.error("Error creating progress log:", error);
-      toast.error("Failed to add progress log");
+      toast.error(
+        error instanceof Error ? error.message : "Failed to add progress log"
+      );
     } finally {
       setIsLoading(false);
     }
@@ -200,22 +216,21 @@ export default function ProgressTracker() {
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="space-y-4"
+                encType="multipart/form-data"
               >
                 <FormField
                   control={form.control}
-                  name="imageUrl"
-                  render={({ field }) => (
+                  name="image"
+                  render={({ field: { value, onChange, ...field } }) => (
                     <FormItem>
-                      <FormLabel>Image URL (Optional)</FormLabel>
+                      <FormLabel>Upload Image</FormLabel>
                       <FormControl>
-                        <div className="flex">
-                          <input
-                            type="text"
-                            className="flex w-full h-10 px-3 py-2 text-sm border rounded-md border-input bg-background ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                            placeholder="E.g., https://example.com/image.jpg"
-                            {...field}
-                          />
-                        </div>
+                        <Input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleImageChange}
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -374,7 +389,6 @@ export default function ProgressTracker() {
           <DialogContent className="sm:max-w-[500px]">
             <DialogHeader>
               <DialogTitle>Progress Log Details</DialogTitle>
-
               <DialogDescription>
                 {formatDate(new Date(viewingLog.createdAt))}
               </DialogDescription>

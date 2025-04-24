@@ -1,4 +1,11 @@
 import { z } from "zod";
+const MAX_FILE_SIZE = 5000000; // 5MB
+const ACCEPTED_IMAGE_TYPES = [
+  "image/jpeg",
+  "image/jpg",
+  "image/png",
+  "image/webp",
+];
 
 export type loginFormData = z.infer<typeof loginFormSchema>;
 export type registerFormData = z.infer<typeof registerFormSchema>;
@@ -41,7 +48,17 @@ export const registerFormSchema = z.object({
 });
 
 export const progressLogSchema = z.object({
-  imageUrl: z.string().optional(),
+  image: z
+    .any()
+    .refine(
+      (file) => !file || file?.size <= MAX_FILE_SIZE,
+      "Max file size is 5MB"
+    )
+    .refine(
+      (file) => !file || ACCEPTED_IMAGE_TYPES.includes(file?.type),
+      "Only .jpg, .jpeg, .png and .webp formats are supported"
+    )
+    .optional(),
   notes: z
     .string()
     .max(500, {
@@ -98,6 +115,7 @@ export const skinAssessmentSchema = z.object({
       message: "Goals description should not exceed 500 characters",
     }),
 });
+
 export const productSchema = z.object({
   name: z.string().min(1, "Name is required"),
   brand: z.string().min(1, "Brand is required"),
