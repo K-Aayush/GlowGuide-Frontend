@@ -104,7 +104,7 @@ export default function DermatologistDashboard() {
   return (
     <div className="container px-4 py-8 mx-auto">
       <div className="flex flex-col gap-2 mb-8">
-        <h1 className="text-2xl font-bold md:text-3xl">
+        <h1 className="text-2xl font-bold text-transparent md:text-3xl bg-gradient-to-r from-pink-500 to-amber-500 bg-clip-text">
           Dermatologist Dashboard
         </h1>
         <p className="text-foreground/70">
@@ -143,7 +143,9 @@ export default function DermatologistDashboard() {
         {/* Patients Table */}
         <Card className="md:col-span-1">
           <CardHeader>
-            <CardTitle>Recent Patients</CardTitle>
+            <CardTitle className="text-transparent bg-gradient-to-r from-pink-500 to-amber-500 bg-clip-text">
+              Recent Patients
+            </CardTitle>
             <CardDescription>View and manage your patient list</CardDescription>
           </CardHeader>
           <CardContent>
@@ -211,9 +213,11 @@ export default function DermatologistDashboard() {
           <CardHeader>
             <div className="flex items-center justify-between">
               <div>
-                <CardTitle className="flex items-center gap-2">
+                <CardTitle className="flex items-center gap-2 ">
                   <Activity className="w-5 h-5 text-primary" />
-                  Recent Activity
+                  <span className="text-transparent bg-gradient-to-r from-pink-500 to-amber-500 bg-clip-text">
+                    Recent Activity
+                  </span>
                 </CardTitle>
                 <CardDescription>
                   Latest updates from your patients

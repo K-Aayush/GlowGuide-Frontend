@@ -67,7 +67,12 @@ export default function ChatWindow({ chat, onClose }: ChatWindowProps) {
   };
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    setTimeout(() => {
+      messagesEndRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "end",
+      });
+    }, 50);
   };
 
   const handleSendMessage = async (e: React.FormEvent) => {
@@ -86,7 +91,7 @@ export default function ChatWindow({ chat, onClose }: ChatWindowProps) {
       // Optimistically add message to UI
       if (userData) {
         const optimisticMessage: MessageData = {
-          id: Date.now().toString(), 
+          id: Date.now().toString(),
           content: newMessage,
           chatId: chat.id,
           senderId: userData.id,
@@ -161,11 +166,13 @@ export default function ChatWindow({ chat, onClose }: ChatWindowProps) {
           </div>
         ) : (
           <div className="space-y-4">
-            {messages.map((message) => {
+            {messages.map((message, index) => {
               const isOwnMessage = message.sender.id === userData?.id;
+              const isLast = index === messages.length - 1;
               return (
                 <div
                   key={message.id}
+                  ref={isLast ? messagesEndRef : null}
                   className={`flex ${
                     isOwnMessage ? "justify-end" : "justify-start"
                   }`}

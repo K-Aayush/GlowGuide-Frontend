@@ -100,7 +100,9 @@ export default function ManageProducts() {
     <div className="container min-h-screen px-4 py-8 mx-auto">
       <div className="flex flex-col gap-2 mb-8 md:flex-row md:items-center md:justify-between">
         <div>
-          <h1 className="text-2xl font-bold md:text-3xl">Manage Products</h1>
+          <h1 className="text-2xl font-bold text-transparent md:text-3xl bg-gradient-to-r from-pink-500 to-amber-500 bg-clip-text">
+            Manage Products
+          </h1>
           <p className="text-foreground/70">
             Add, edit, or remove skincare products
           </p>

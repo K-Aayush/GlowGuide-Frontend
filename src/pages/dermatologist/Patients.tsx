@@ -103,7 +103,9 @@ export default function Patients() {
   return (
     <div className="container px-4 py-8 mx-auto">
       <div className="flex flex-col gap-2 mb-8">
-        <h1 className="text-2xl font-bold md:text-3xl">All Patients</h1>
+        <h1 className="text-2xl font-bold text-transparent md:text-3xl bg-gradient-to-r from-pink-500 to-amber-500 bg-clip-text">
+          All Patients
+        </h1>
         <p className="text-foreground/70">
           View and manage your complete patient list
         </p>
@@ -111,7 +113,9 @@ export default function Patients() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Patient List</CardTitle>
+          <CardTitle className="text-transparent bg-gradient-to-r from-pink-500 to-amber-500 bg-clip-text">
+            Patient List
+          </CardTitle>
           <CardDescription>
             {filteredAndSortedPatients.length} total patients
           </CardDescription>

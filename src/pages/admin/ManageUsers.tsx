@@ -46,7 +46,9 @@ export default function ManageUsers() {
   return (
     <div className="container px-4 py-8 mx-auto">
       <div className="flex flex-col gap-2 mb-8">
-        <h1 className="text-2xl font-bold md:text-3xl">Manage Users</h1>
+        <h1 className="text-2xl font-bold text-transparent md:text-3xl bg-gradient-to-r from-pink-500 to-amber-500 bg-clip-text">
+          Manage Users
+        </h1>
         <p className="text-foreground/70">View and manage system users</p>
       </div>
 
