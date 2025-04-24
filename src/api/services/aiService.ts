@@ -6,12 +6,16 @@ const aiService = {
     try {
       const { data } = await apiClient.get("/api/ai/recommendations");
       return {
-        aiRecommendations: data.recommendations || "",
-        matchingProducts: data.products || [],
+        aiRecommendations: data.aiRecommendations || "",
+        matchingProducts: data.matchingProducts || [],
       };
     } catch (error) {
-      console.error("AI recommendations error:", error);
-      throw error;
+      console.log(error);
+      return {
+        aiRecommendations:
+          "We're currently experiencing issues with our AI recommendations. Please try again later.",
+        matchingProducts: [],
+      };
     }
   },
 };

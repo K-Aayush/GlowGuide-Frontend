@@ -140,10 +140,10 @@ export interface ProductData {
   description: string;
   ingredients: string;
   sustainabilityScore: number;
-  allergens?: string;
-  imageUrl?: string;
-  suitableSkinTypes: { type: SkinType }[];
-  targetConcerns: { concern: SkinConcern }[];
+  allergens?: string | null;
+  imageUrl?: string | null;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 // Routine related types

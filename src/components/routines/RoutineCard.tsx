@@ -1,7 +1,5 @@
-import { Link } from "react-router-dom";
 import {
   Card,
-  CardContent,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -12,19 +10,24 @@ import { RoutineData } from "../../lib/types";
 
 interface RoutineCardProps {
   routine: RoutineData;
+  onEdit: (routine: RoutineData) => void;
   onDelete: (id: string) => void;
 }
 
-export default function RoutineCard({ routine, onDelete }: RoutineCardProps) {
+export default function RoutineCard({
+  routine,
+  onEdit,
+  onDelete,
+}: RoutineCardProps) {
   const getRoutineImage = (type: string) => {
     if (type.toLowerCase().includes("morning")) {
-      return "https://images.pexels.com/photos/3807330/pexels-photo-3807330.jpeg";
+      return "https://images.pexels.com/photos/4045607/pexels-photo-4045607.jpeg";
     } else if (type.toLowerCase().includes("night")) {
-      return "https://images.pexels.com/photos/3373738/pexels-photo-3373738.jpeg";
+      return "https://images.pexels.com/photos/573238/pexels-photo-573238.jpeg";
     } else if (type.toLowerCase().includes("weekly")) {
-      return "https://images.pexels.com/photos/3373716/pexels-photo-3373716.jpeg";
+      return "https://images.pexels.com/photos/31745943/pexels-photo-31745943/free-photo-of-woman-in-green-jacket-walking-dog-outdoors.jpeg";
     } else {
-      return "https://images.pexels.com/photos/4046316/pexels-photo-4046316.jpeg";
+      return "https://images.pexels.com/photos/3036525/pexels-photo-3036525.jpeg";
     }
   };
 
@@ -32,6 +35,12 @@ export default function RoutineCard({ routine, onDelete }: RoutineCardProps) {
     e.preventDefault();
     e.stopPropagation();
     onDelete(routine.id);
+  };
+
+  const handleEdit = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    onEdit(routine);
   };
 
   return (
@@ -54,19 +63,10 @@ export default function RoutineCard({ routine, onDelete }: RoutineCardProps) {
         <CardTitle className="text-lg">{routine.name}</CardTitle>
       </CardHeader>
 
-      <CardContent className="py-0">
-        <p className="text-sm text-foreground/70">
-          {routine.steps?.length ?? 0}{" "}
-          {routine.steps?.length === 1 ? "step" : "steps"}
-        </p>
-      </CardContent>
-
       <CardFooter className="flex justify-between py-4">
-        <Button variant="outline" size="sm" asChild>
-          <Link to={`/user/routines/${routine.id}`}>
-            <Edit className="w-4 h-4 mr-2" />
-            Edit
-          </Link>
+        <Button variant="outline" size="sm" onClick={handleEdit}>
+          <Edit className="w-4 h-4 mr-2" />
+          Edit
         </Button>
         <Button variant="destructive" size="sm" onClick={handleDelete}>
           <Trash2 className="w-4 h-4 mr-2" />
