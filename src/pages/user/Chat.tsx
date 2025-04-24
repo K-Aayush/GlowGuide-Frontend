@@ -58,7 +58,7 @@ export default function Chat() {
 
   const fetchDermatologists = async () => {
     try {
-      const data = await dermotologistService.getPatients();
+      const data = await dermotologistService.getDermatologists();
       setDermatologists(data);
     } catch (error) {
       console.error("Error fetching dermatologists:", error);

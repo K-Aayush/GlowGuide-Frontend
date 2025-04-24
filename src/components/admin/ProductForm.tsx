@@ -41,6 +41,7 @@ export function ProductForm({ onSubmit, editingProduct }: ProductFormProps) {
           allergens: editingProduct.allergens,
           skinTypes: editingProduct.suitableSkinTypes.map((st) => st.type),
           concerns: editingProduct.targetConcerns.map((tc) => tc.concern),
+          price: editingProduct.price,
         }
       : {
           name: "",

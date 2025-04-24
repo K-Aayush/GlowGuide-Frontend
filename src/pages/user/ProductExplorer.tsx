@@ -26,78 +26,6 @@ import {
 import { Badge } from "../../components/ui/badge";
 import { Checkbox } from "../../components/ui/checkbox";
 
-// Mock data for demonstration
-const MOCK_PRODUCTS: ProductData[] = [
-  {
-    id: "1",
-    name: "Hydrating Serum",
-    brand: "GlowDerm",
-    description:
-      "A lightweight serum with hyaluronic acid to deeply hydrate skin.",
-    ingredients:
-      "Water, Glycerin, Sodium Hyaluronate, Panthenol, Allantoin, Propylene Glycol, Phenoxyethanol, Ethylhexylglycerin",
-    sustainabilityScore: 4,
-    imageUrl:
-      "https://images.pexels.com/photos/3685530/pexels-photo-3685530.jpeg",
-  },
-  {
-    id: "2",
-    name: "Gentle Cleanser",
-    brand: "PureSkin",
-    description: "Mild, pH-balanced cleanser for all skin types.",
-    ingredients:
-      "Water, Cocamidopropyl Betaine, Sodium Cocoyl Isethionate, Glycerin, Panthenol, Aloe Barbadensis Leaf Juice, Camellia Sinensis Leaf Extract",
-    sustainabilityScore: 5,
-    imageUrl:
-      "https://images.pexels.com/photos/3736397/pexels-photo-3736397.jpeg",
-  },
-  {
-    id: "3",
-    name: "Vitamin C Brightening Cream",
-    brand: "RadiantLabs",
-    description:
-      "Powerful antioxidant cream that brightens and evens skin tone.",
-    ingredients:
-      "Water, Ascorbic Acid, Tocopherol, Ferulic Acid, Glycerin, Shea Butter, Dimethicone, Phenoxyethanol",
-    sustainabilityScore: 3,
-    imageUrl:
-      "https://images.pexels.com/photos/4465124/pexels-photo-4465124.jpeg",
-  },
-  {
-    id: "4",
-    name: "Niacinamide Treatment",
-    brand: "ClearBalance",
-    description: "Reduces appearance of pores and improves uneven skin tone.",
-    ingredients:
-      "Water, Niacinamide, Zinc PCA, Glycerin, Panthenol, Allantoin, Xanthan Gum, Phenoxyethanol",
-    sustainabilityScore: 4,
-    imageUrl:
-      "https://images.pexels.com/photos/3785147/pexels-photo-3785147.jpeg",
-  },
-  {
-    id: "5",
-    name: "Exfoliating Toner",
-    brand: "RenewYou",
-    description: "Gentle exfoliation with BHA and fruit enzymes.",
-    ingredients:
-      "Water, Salicylic Acid, Glycolic Acid, Papaya Enzyme, Aloe Vera, Witch Hazel, Glycerin, Phenoxyethanol",
-    sustainabilityScore: 3,
-    imageUrl:
-      "https://images.pexels.com/photos/3786694/pexels-photo-3786694.jpeg",
-  },
-  {
-    id: "6",
-    name: "SPF 50 Sunscreen",
-    brand: "SunShield",
-    description: "Broad-spectrum protection with antioxidants.",
-    ingredients:
-      "Water, Homosalate, Octocrylene, Ethylhexyl Salicylate, Butyl Methoxydibenzoylmethane, Benzophenone-3, Glycerin",
-    sustainabilityScore: 2,
-    imageUrl:
-      "https://images.pexels.com/photos/3737697/pexels-photo-3737697.jpeg",
-  },
-];
-
 // Skin types
 const skinTypes = [
   { value: "DRY", label: "Dry" },
@@ -121,42 +49,48 @@ const skinConcerns = [
 
 export default function ProductExplorer() {
   const { setIsLoading } = useContext(AppContext);
-  const [products, setProducts] = useState<ProductData[]>(MOCK_PRODUCTS);
+  const [products, setProducts] = useState<ProductData[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedSkinType, setSelectedSkinType] = useState<string>("");
   const [selectedConcerns, setSelectedConcerns] = useState<string[]>([]);
   const [minSustainability, setMinSustainability] = useState<number>(0);
   const [sortBy, setSortBy] = useState<string>("relevance");
-  const [filteredProducts, setFilteredProducts] =
-    useState<ProductData[]>(MOCK_PRODUCTS);
+  const [filteredProducts, setFilteredProducts] = useState<ProductData[]>([]);
   const [isLocalLoading, setIsLocalLoading] = useState(false);
 
-  // Fetch products (mock implementation)
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        setIsLoading(true);
-        setIsLocalLoading(true);
-
-        // In a real implementation, this would call the API
-        // const data = await productService.getProducts({
-        //   skinType: selectedSkinType,
-        //   concerns: selectedConcerns,
-        // });
-        // setProducts(data);
-
-        // Using mock data for now
-        setIsLocalLoading(false);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-        toast.error("Failed to load products");
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     fetchProducts();
-  }, [setIsLoading]);
+  }, [selectedSkinType, selectedConcerns]);
+
+  const fetchProducts = async () => {
+    try {
+      setIsLoading(true);
+      setIsLocalLoading(true);
+
+      const params: {
+        skinType?: string;
+        concerns?: string[];
+      } = {};
+
+      if (selectedSkinType) {
+        params.skinType = selectedSkinType;
+      }
+
+      if (selectedConcerns.length > 0) {
+        params.concerns = selectedConcerns;
+      }
+
+      const data = await productService.getProducts(params);
+      setProducts(data);
+      setFilteredProducts(data);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+      toast.error("Failed to load products");
+    } finally {
+      setIsLoading(false);
+      setIsLocalLoading(false);
+    }
+  };
 
   // Filter and sort products
   useEffect(() => {
@@ -172,20 +106,6 @@ export default function ProductExplorer() {
       );
     }
 
-    // Apply skin type filter
-    if (selectedSkinType) {
-      // In a real implementation, this would filter based on product suitability for skin type
-      // This is just a placeholder logic
-      result = result.filter((_) => true);
-    }
-
-    // Apply concerns filter
-    if (selectedConcerns.length > 0) {
-      // In a real implementation, this would filter based on product addressing concerns
-      // This is just a placeholder logic
-      result = result.filter((_) => true);
-    }
-
     // Apply sustainability filter
     if (minSustainability > 0) {
       result = result.filter(
@@ -195,11 +115,9 @@ export default function ProductExplorer() {
 
     // Apply sorting
     if (sortBy === "price-low") {
-      // In a real implementation, this would sort by price
-      result = [...result]; // Just a placeholder
+      result = [...result].sort((a, b) => (a.price || 0) - (b.price || 0));
     } else if (sortBy === "price-high") {
-      // In a real implementation, this would sort by price in descending order
-      result = [...result]; // Just a placeholder
+      result = [...result].sort((a, b) => (b.price || 0) - (a.price || 0));
     } else if (sortBy === "sustainability") {
       result = result.sort(
         (a, b) => b.sustainabilityScore - a.sustainabilityScore
@@ -207,14 +125,7 @@ export default function ProductExplorer() {
     }
 
     setFilteredProducts(result);
-  }, [
-    products,
-    searchTerm,
-    selectedSkinType,
-    selectedConcerns,
-    minSustainability,
-    sortBy,
-  ]);
+  }, [products, searchTerm, minSustainability, sortBy]);
 
   // Toggle concern selection
   const toggleConcern = (concernId: string) => {
