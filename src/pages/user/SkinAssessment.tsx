@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -86,10 +86,16 @@ export default function SkinAssessment() {
       isValid = await form.trigger("skinType");
     } else if (step === 2) {
       isValid = await form.trigger("concerns");
+    } else if (step === 3) {
+      isValid = await form.trigger(["goals", "allergies"]);
     }
 
     if (isValid) {
-      setStep(step + 1);
+      if (step === totalSteps) {
+        await form.handleSubmit(onSubmit)();
+      } else {
+        setStep(step + 1);
+      }
     }
   };
 
@@ -353,15 +359,13 @@ export default function SkinAssessment() {
                 </Button>
               )}
 
-              {step < totalSteps ? (
-                <Button type="button" onClick={handleNextStep}>
-                  Next
-                </Button>
-              ) : (
-                <Button type="submit">
-                  {skinProfile ? "Update Profile" : "Complete Assessment"}
-                </Button>
-              )}
+              <Button type="button" onClick={handleNextStep}>
+                {step === totalSteps
+                  ? skinProfile
+                    ? "Update Profile"
+                    : "Complete Assessment"
+                  : "Next"}
+              </Button>
             </CardFooter>
           </form>
         </Form>
