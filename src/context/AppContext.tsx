@@ -27,28 +27,31 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
   const [token, setToken] = useState<string | null>(
     localStorage.getItem("token")
   );
-  const [userData, setUserData] = useState<UserData | null>(null);
+  const [userData, setUserData] = useState<UserData | null>(() => {
+    const storedUser = localStorage.getItem("userData");
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
   const [skinProfile, setSkinProfile] = useState<SkinProfileData | null>(null);
 
   const isAuthenticated = !!token && !!userData;
 
   const logout = () => {
     authService.logout();
-    toast.success("LogedOut Successful");
+    toast.success("Logged Out Successfully");
     setToken(null);
     setUserData(null);
     setSkinProfile(null);
   };
 
-  //fetch userdata
+  // Fetch user data when token exists but userData doesn't
   useEffect(() => {
     const fetchUser = async () => {
-      if (token) {
+      if (token && !userData) {
         setIsLoading(true);
         try {
           const user = await authService.getCurrentUser();
           setUserData(user);
-          console.log(user);
+          localStorage.setItem("userData", JSON.stringify(user));
         } catch (error) {
           console.error("Failed to fetch user:", error);
           logout();
@@ -59,7 +62,22 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
     };
 
     fetchUser();
-  }, [token]);
+  }, [token, userData]);
+
+  // Update localStorage when token or userData changes
+  useEffect(() => {
+    if (token) {
+      localStorage.setItem("token", token);
+    } else {
+      localStorage.removeItem("token");
+    }
+
+    if (userData) {
+      localStorage.setItem("userData", JSON.stringify(userData));
+    } else {
+      localStorage.removeItem("userData");
+    }
+  }, [token, userData]);
 
   const value = {
     isLoading,
