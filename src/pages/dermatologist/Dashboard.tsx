@@ -188,7 +188,7 @@ export default function DermatologistDashboard() {
                 <TableHeader>
                   <TableRow>
                     <TableHead>Name</TableHead>
-                    <TableHead>Skin Type</TableHead>
+                    <TableHead>Email</TableHead>
                     <TableHead>Last Assessment</TableHead>
                     <TableHead></TableHead>
                   </TableRow>
@@ -197,13 +197,7 @@ export default function DermatologistDashboard() {
                   {filteredPatients.slice(0, 5).map((patient) => (
                     <TableRow key={patient.id}>
                       <TableCell>{patient.name}</TableCell>
-                      <TableCell>
-                        {patient.skinProfile?.SkinType?.length
-                          ? patient.skinProfile.SkinType.map(
-                              (t) => t.type
-                            ).join(", ")
-                          : "N/A"}
-                      </TableCell>
+                      <TableCell>{patient.email}</TableCell>
                       <TableCell>
                         {new Date(
                           patient.skinProfile?.lastAssessment || ""

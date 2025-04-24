@@ -38,7 +38,7 @@ export function ProductForm({ onSubmit, editingProduct }: ProductFormProps) {
           description: editingProduct.description,
           ingredients: editingProduct.ingredients,
           sustainabilityScore: editingProduct.sustainabilityScore,
-          allergens: editingProduct.allergens,
+          allergens: editingProduct.allergens || undefined,
           skinTypes: editingProduct.suitableSkinTypes.map((st) => st.type),
           concerns: editingProduct.targetConcerns.map((tc) => tc.concern),
           price: editingProduct.price,
@@ -52,20 +52,20 @@ export function ProductForm({ onSubmit, editingProduct }: ProductFormProps) {
           allergens: "",
           skinTypes: [],
           concerns: [],
+          price: 0,
         },
   });
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files?.[0]) {
-      const formData = form.getValues();
-      onSubmit({ ...formData, image: e.target.files[0] });
-    }
+  const handleSubmit = async (values: ProductFormValues) => {
+    const fileInput =
+      document.querySelector<HTMLInputElement>('input[type="file"]');
+    const image = fileInput?.files?.[0];
+    await onSubmit({ ...values, image });
   };
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        {/* Keep the same form fields structure but move them here */}
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
         <div className="grid grid-cols-2 gap-4">
           <FormField
             control={form.control}
@@ -123,7 +123,7 @@ export function ProductForm({ onSubmit, editingProduct }: ProductFormProps) {
           )}
         />
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-3 gap-4">
           <FormField
             control={form.control}
             name="sustainabilityScore"
@@ -160,6 +160,26 @@ export function ProductForm({ onSubmit, editingProduct }: ProductFormProps) {
                 <FormLabel>Allergens (Optional)</FormLabel>
                 <FormControl>
                   <Input {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="price"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Price</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    {...field}
+                    onChange={(e) => field.onChange(parseFloat(e.target.value))}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -248,7 +268,7 @@ export function ProductForm({ onSubmit, editingProduct }: ProductFormProps) {
 
         <div>
           <FormLabel>Product Image</FormLabel>
-          <Input type="file" accept="image/*" onChange={handleImageChange} />
+          <Input type="file" accept="image/*" />
         </div>
 
         <DialogFooter>
