@@ -200,17 +200,7 @@ export default function Navbar() {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem
-                  onClick={() =>
-                    navigate(
-                      userData?.role === "USER"
-                        ? "/user/profile"
-                        : userData?.role === "DERMATOLOGISTS"
-                        ? "/dermatologist/profile"
-                        : "/admin/profile"
-                    )
-                  }
-                >
+                <DropdownMenuItem onClick={() => navigate("/profile")}>
                   <Settings className="w-4 h-4 mr-2" />
                   Profile
                 </DropdownMenuItem>

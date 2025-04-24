@@ -30,6 +30,7 @@ import Appointments from "./pages/user/Appointment";
 import DermotologistAppointments from "./pages/dermatologist/Appointments";
 import PatientDetails from "./pages/dermatologist/PatientDetails";
 import Patients from "./pages/dermatologist/Patients";
+import Profile from "./pages/Profile";
 
 function App() {
   return (
@@ -43,6 +44,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/skincare-101" element={<SkinCare101 />} />
           <Route path="/about-us" element={<AboutUs />} />
+          <Route path="/Profile" element={<Profile />} />
 
           {/* User Routes */}
           <Route
