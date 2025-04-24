@@ -11,7 +11,12 @@ import {
   CardHeader,
   CardTitle,
 } from "../../components/ui/card";
-import { RoutineData, ProgressLogData, SkinProfileData } from "../../lib/types";
+import {
+  RoutineData,
+  ProgressLogData,
+  SkinProfileData,
+  SkinConcernObject,
+} from "../../lib/types";
 import skinProfileService from "../../api/services/skinService";
 import routineService from "../../api/services/routineService";
 import progressService from "../../api/services/progressService";
@@ -67,6 +72,20 @@ export default function Dashboard() {
 
     fetchDashboardData();
   }, [setIsLoading, setSkinProfile]);
+
+  // Format concerns for display
+  const formatConcerns = (concerns: SkinConcernObject[]) => {
+    if (!Array.isArray(concerns)) return "No concerns listed";
+    return concerns
+      .map((concern) =>
+        concern.concern
+          .toLowerCase()
+          .split("_")
+          .map((word: string) => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(" ")
+      )
+      .join(", ");
+  };
 
   if (isLoading) {
     return (
@@ -131,12 +150,12 @@ export default function Dashboard() {
               <div className="space-y-2">
                 <div>
                   <p className="text-sm font-medium">Skin Type</p>
-                  <p className="text-lg">
-                    {userProfile.skinType && userProfile.skinType.length > 0
-                      ? userProfile.skinType.map((skin, index) => (
+                  <p className="text-sm text-foreground/70">
+                    {userProfile.SkinType && userProfile.SkinType.length > 0
+                      ? userProfile.SkinType.map((skin, index) => (
                           <span key={index}>
                             {skin.type}
-                            {index < userProfile.skinType.length - 1 && ", "}
+                            {index < userProfile.SkinType.length - 1 && ", "}
                           </span>
                         ))
                       : "No skin type available"}
@@ -144,12 +163,9 @@ export default function Dashboard() {
                 </div>
                 <div>
                   <p className="text-sm font-medium">Top Concern</p>
-                  <p className="text-lg">
-                    {userProfile.concerns
-                      ? userProfile.concerns
-                          .toString()
-                          .replace("_", " ")
-                          .toLowerCase()
+                  <p className="text-sm text-foreground/70">
+                    {userProfile.Concerns
+                      ? formatConcerns(userProfile.Concerns)
                       : "No concerns listed"}
                   </p>
                 </div>
