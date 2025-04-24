@@ -21,6 +21,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../components/ui/select";
+import { Link } from "react-router-dom";
 
 export default function DermotologistAppointments() {
   const { setIsLoading } = useContext(AppContext);
@@ -125,9 +126,11 @@ export default function DermotologistAppointments() {
                 </TableCell>
                 <TableCell>{appointment.notes || "No notes"}</TableCell>
                 <TableCell>
-                  <Button variant="outline" size="sm">
-                    View Details
-                  </Button>
+                  <Link to={`/dermatologist/patients/${appointment.user.id}`}>
+                    <Button variant="outline" size="sm">
+                      View Details
+                    </Button>
+                  </Link>
                 </TableCell>
               </TableRow>
             ))}
