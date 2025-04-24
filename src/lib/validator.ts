@@ -13,6 +13,7 @@ export type ProgressLogFormValues = z.infer<typeof progressLogSchema>;
 export type RoutineFormValues = z.infer<typeof routineFormSchema>;
 export type SkinAssessmentFormValues = z.infer<typeof skinAssessmentSchema>;
 export type ProductFormValues = z.infer<typeof productSchema>;
+export type ProfileFormValues = z.infer<typeof profileSchema>;
 
 export const loginFormSchema = z.object({
   email: z.string({ required_error: "Email is required" }),
@@ -127,4 +128,16 @@ export const productSchema = z.object({
   concerns: z.array(z.string()).min(1, "Select at least one concern"),
   image: z.any().optional(),
   price: z.number().gte(5, "Amount must be atleast 5").positive(),
+});
+
+export const profileSchema = z.object({
+  name: z.string().min(3, "Name must be at least 3 characters"),
+  email: z.string().email("Invalid email format"),
+  phone: z.string().min(10, "Phone number must be at least 10 characters"),
+  image: z.any().optional(),
+  currentPassword: z.string().optional(),
+  newPassword: z
+    .string()
+    .min(8, "Password must be at least 8 characters")
+    .optional(),
 });

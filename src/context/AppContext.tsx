@@ -27,9 +27,7 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
   const [token, setToken] = useState<string | null>(
     localStorage.getItem("token")
   );
-  const [userData, setUserData] = useState<UserData | null>(
-    authService.getCurrentUser()
-  );
+  const [userData, setUserData] = useState<UserData | null>(null);
   const [skinProfile, setSkinProfile] = useState<SkinProfileData | null>(null);
 
   const isAuthenticated = !!token && !!userData;
@@ -42,16 +40,26 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
     setSkinProfile(null);
   };
 
-  // Load user data from localStorage on initial mount
+  //fetch userdata
   useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    const storedUserData = localStorage.getItem("userData");
+    const fetchUser = async () => {
+      if (token) {
+        setIsLoading(true);
+        try {
+          const user = await authService.getCurrentUser();
+          setUserData(user);
+          console.log(user);
+        } catch (error) {
+          console.error("Failed to fetch user:", error);
+          logout();
+        } finally {
+          setIsLoading(false);
+        }
+      }
+    };
 
-    if (storedToken && storedUserData) {
-      setToken(storedToken);
-      setUserData(JSON.parse(storedUserData));
-    }
-  }, []);
+    fetchUser();
+  }, [token]);
 
   const value = {
     isLoading,

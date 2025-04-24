@@ -44,9 +44,9 @@ const authService = {
     localStorage.removeItem("userData");
   },
 
-  getCurrentUser: () => {
-    const userData = localStorage.getItem("userData");
-    return userData ? JSON.parse(userData) : null;
+  getCurrentUser: async () => {
+    const { data } = await apiClient.get("/api/auth/me");
+    return data.user;
   },
 };
 
