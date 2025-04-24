@@ -28,6 +28,7 @@ import UserChat from "./pages/user/Chat";
 import AIRecommendations from "./pages/user/AIRecommendations";
 import Appointments from "./pages/user/Appointment";
 import DermotologistAppointments from "./pages/dermatologist/Appointments";
+import PatientDetails from "./pages/dermatologist/PatientDetails";
 
 function App() {
   return (
@@ -134,6 +135,15 @@ function App() {
             element={
               <ProtectedRoute
                 element={<DermotologistAppointments />}
+                allowedRoles={["DERMATOLOGISTS"]}
+              />
+            }
+          />
+          <Route
+            path="/dermatologist/patients/:id"
+            element={
+              <ProtectedRoute
+                element={<PatientDetails />}
                 allowedRoles={["DERMATOLOGISTS"]}
               />
             }

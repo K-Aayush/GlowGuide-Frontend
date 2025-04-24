@@ -32,6 +32,7 @@ export default function PatientDetails() {
         if (id) {
           const data = await dermotologistService.getPatientDetails(id);
           setPatient(data);
+          console.log(data);
         }
       } catch (error) {
         console.error("Error fetching patient details:", error);
@@ -75,9 +76,9 @@ export default function PatientDetails() {
         </p>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-3">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {/* Patient Profile Card */}
-        <Card className="md:col-span-1">
+        <Card className="lg:col-span-1">
           <CardHeader>
             <div className="flex items-center gap-4">
               <Avatar className="w-16 h-16">
@@ -107,7 +108,7 @@ export default function PatientDetails() {
         </Card>
 
         {/* Skin Profile Card */}
-        <Card className="md:col-span-2">
+        <Card className="lg:col-span-2">
           <CardHeader>
             <CardTitle>Skin Profile</CardTitle>
             <CardDescription>
@@ -157,7 +158,7 @@ export default function PatientDetails() {
         </Card>
 
         {/* Progress Logs */}
-        <Card className="md:col-span-3">
+        <Card className="lg:col-span-3">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Camera className="w-5 h-5" />
