@@ -221,6 +221,7 @@ export default function ProgressTracker() {
                 <FormField
                   control={form.control}
                   name="image"
+                  // eslint-disable-next-line @typescript-eslint/no-unused-vars
                   render={({ field: { value, onChange, ...field } }) => (
                     <FormItem>
                       <FormLabel>Upload Image</FormLabel>
