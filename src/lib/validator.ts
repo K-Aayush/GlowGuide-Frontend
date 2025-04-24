@@ -40,7 +40,6 @@ export const registerFormSchema = z.object({
   phone: z.string().min(3, "Phone Number is required."),
 });
 
-// Form schema
 export const progressLogSchema = z.object({
   imageUrl: z.string().optional(),
   notes: z
@@ -73,9 +72,22 @@ export const skinAssessmentSchema = z.object({
   skinType: z.enum(["DRY", "OILY", "COMBINATION", "NORMAL", "SENSITIVE"], {
     required_error: "Please select a skin type",
   }),
-  concerns: z.array(z.string()).min(1, {
-    message: "Please select at least one skin concern",
-  }),
+  concerns: z
+    .array(
+      z.enum([
+        "ACNE",
+        "AGING",
+        "PIGMENTATION",
+        "SENSITIVITY",
+        "DRYNESS",
+        "OILINESS",
+        "REDNESS",
+        "UNEVEN_TEXTURE",
+      ])
+    )
+    .min(1, {
+      message: "Please select at least one skin concern",
+    }),
   allergies: z.string().optional(),
   goals: z
     .string()
@@ -86,7 +98,6 @@ export const skinAssessmentSchema = z.object({
       message: "Goals description should not exceed 500 characters",
     }),
 });
-
 export const productSchema = z.object({
   name: z.string().min(1, "Name is required"),
   brand: z.string().min(1, "Brand is required"),
