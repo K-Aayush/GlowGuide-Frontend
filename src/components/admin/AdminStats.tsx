@@ -14,18 +14,21 @@ export function AdminStats({ stats }: AdminStatsProps) {
         label="Total Users"
         value={stats?.totalUsers || 0}
         iconColor="text-blue-500"
+        bgColor="bg-blue-50"
       />
       <StatsCard
         icon={Package}
         label="Total Products"
         value={stats?.totalProducts || 0}
         iconColor="text-green-500"
+        bgColor="bg-green-50"
       />
       <StatsCard
         icon={Activity}
         label="Active Dermatologists"
         value={stats?.totalDermatologists || 0}
         iconColor="text-purple-500"
+        bgColor="bg-purple-50"
       />
     </div>
   );

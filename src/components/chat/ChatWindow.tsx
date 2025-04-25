@@ -123,8 +123,8 @@ export default function ChatWindow({ chat, onClose }: ChatWindowProps) {
   };
 
   return (
-    <div className="flex flex-col h-full">
-      <div className="flex items-center justify-between p-4 border-b">
+    <div className="flex flex-col h-full overflow-hidden">
+      <div className="flex items-center justify-between p-4 border-b shrink-0">
         <div className="flex items-center gap-3">
           <Avatar>
             <AvatarImage
@@ -159,20 +159,18 @@ export default function ChatWindow({ chat, onClose }: ChatWindowProps) {
         )}
       </div>
 
-      <div className="flex-1 p-4 overflow-y-auto">
+      <div className="flex-1 min-h-0 p-4 overflow-y-auto ">
         {isLoading ? (
           <div className="flex items-center justify-center h-full">
             <Loader2 className="w-6 h-6 animate-spin" />
           </div>
         ) : (
-          <div className="space-y-4">
-            {messages.map((message, index) => {
+          <div className="space-y-4 ">
+            {messages.map((message) => {
               const isOwnMessage = message.sender.id === userData?.id;
-              const isLast = index === messages.length - 1;
               return (
                 <div
                   key={message.id}
-                  ref={isLast ? messagesEndRef : null}
                   className={`flex ${
                     isOwnMessage ? "justify-end" : "justify-start"
                   }`}
@@ -205,15 +203,15 @@ export default function ChatWindow({ chat, onClose }: ChatWindowProps) {
 
       <form
         onSubmit={handleSendMessage}
-        className="flex items-center gap-2 p-4 border-t"
+        className="flex items-center gap-2 p-4 border-t shrink-0 bg-background max-md:mb-12"
       >
         <Input
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
           placeholder="Type your message..."
-          className="flex-1"
+          className=""
         />
-        <Button type="submit" size="icon">
+        <Button type="submit" size="icon" className="shrink-0">
           <Send className="w-4 h-4" />
         </Button>
       </form>

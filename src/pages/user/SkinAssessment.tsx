@@ -143,12 +143,12 @@ export default function SkinAssessment() {
     { id: "OILINESS", label: "Oiliness" },
     { id: "REDNESS", label: "Redness" },
     { id: "UNEVEN_TEXTURE", label: "Uneven Texture" },
-  ];
+  ] as const;
 
   return (
     <div className="container max-w-3xl px-4 py-10 mx-auto">
       <div className="flex flex-col items-center mb-8 text-center">
-        <h1 className="mb-2 text-3xl font-bold">
+        <h1 className="mb-2 text-3xl font-bold text-transparent bg-gradient-to-r from-pink-500 to-amber-500 bg-clip-text">
           {skinProfile ? "Update Skin Profile" : "Skin Assessment"}
         </h1>
         <p className="text-foreground/70">
@@ -180,7 +180,9 @@ export default function SkinAssessment() {
             {step === 1 && (
               <>
                 <CardHeader>
-                  <CardTitle>What's your skin type?</CardTitle>
+                  <CardTitle className="text-transparent md:text-3xl bg-gradient-to-r from-pink-500 to-amber-500 bg-clip-text">
+                    What's your skin type?
+                  </CardTitle>
                   <CardDescription>
                     Choose the option that best describes your skin most of the
                     time
@@ -231,7 +233,9 @@ export default function SkinAssessment() {
             {step === 2 && (
               <>
                 <CardHeader>
-                  <CardTitle>What are your skin concerns?</CardTitle>
+                  <CardTitle className="text-transparent md:text-3xl bg-gradient-to-r from-pink-500 to-amber-500 bg-clip-text">
+                    What are your skin concerns?
+                  </CardTitle>
                   <CardDescription>
                     Select all that apply to you
                   </CardDescription>
@@ -289,7 +293,9 @@ export default function SkinAssessment() {
             {step === 3 && (
               <>
                 <CardHeader>
-                  <CardTitle>Tell us more about you</CardTitle>
+                  <CardTitle className="text-transparent md:text-3xl bg-gradient-to-r from-pink-500 to-amber-500 bg-clip-text">
+                    Tell us more about you
+                  </CardTitle>
                   <CardDescription>
                     Share any allergies and your skincare goals
                   </CardDescription>

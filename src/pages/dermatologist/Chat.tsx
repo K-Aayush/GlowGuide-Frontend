@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../context/AppContext";
 import { Button } from "../../components/ui/button";
 import { Input } from "../../components/ui/input";
-import { Search } from "lucide-react";
+import { ArrowLeft, Search } from "lucide-react";
 import { toast } from "sonner";
 import { ChatData } from "../../lib/types";
 import chatService from "../../api/services/chatService";
@@ -18,6 +18,17 @@ export default function Chat() {
   const [chats, setChats] = useState<ChatData[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedChat, setSelectedChat] = useState<ChatData | null>(null);
+  const [isMobileView, setIsMobileView] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobileView(window.innerWidth < 768);
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     fetchChats();
@@ -44,7 +55,11 @@ export default function Chat() {
     <div className="container h-[calc(100vh-4rem)] px-4 py-8 mx-auto">
       <div className="flex h-full overflow-hidden border rounded-lg">
         {/* Chat List */}
-        <div className="w-full border-r md:w-80">
+        <div
+          className={`w-full border-r md:w-80 ${
+            isMobileView && selectedChat ? "hidden" : "block"
+          }`}
+        >
           <div className="flex flex-col h-full">
             <div className="p-4 border-b">
               <h2 className="mb-4 text-xl font-bold">Messages</h2>
@@ -85,9 +100,27 @@ export default function Chat() {
         </div>
 
         {/* Chat Window */}
-        <div className="flex-1 hidden md:block">
+        <div
+          className={`flex-1 ${
+            isMobileView && !selectedChat ? "hidden" : "block"
+          }`}
+        >
           {selectedChat ? (
-            <ChatWindow chat={selectedChat} />
+            <div className="h-full">
+              {isMobileView && (
+                <div className="p-2 border-b">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setSelectedChat(null)}
+                  >
+                    <ArrowLeft className="w-4 h-4 mr-2" />
+                    Back to chats
+                  </Button>
+                </div>
+              )}
+              <ChatWindow chat={selectedChat} />
+            </div>
           ) : (
             <div className="flex flex-col items-center justify-center h-full text-center">
               <h3 className="mb-2 text-lg font-medium">Select a chat</h3>

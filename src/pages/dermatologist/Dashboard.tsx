@@ -114,7 +114,7 @@ export default function DermatologistDashboard() {
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 gap-6 mb-8 sm:grid-cols-2 ">
-        <Card>
+        <Card className="bg-blue-50">
           <CardContent className="flex items-center gap-4 p-6">
             <Users className="w-8 h-8 text-blue-500" />
             <div>
@@ -126,7 +126,7 @@ export default function DermatologistDashboard() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-green-50">
           <CardContent className="flex items-center gap-4 p-6">
             <UserPlus className="w-8 h-8 text-green-500" />
             <div>

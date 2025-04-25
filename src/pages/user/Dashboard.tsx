@@ -116,7 +116,7 @@ export default function Dashboard() {
         <Card className="mb-8 bg-gradient-to-r from-primary/20 to-pink-100">
           <CardContent className="flex flex-col items-center gap-4 py-6 text-center md:flex-row md:justify-between md:text-left">
             <div>
-              <h2 className="mb-2 text-xl font-semibold">
+              <h2 className="mb-2 text-xl font-semibold text-transparent bg-gradient-to-r from-pink-500 to-amber-500 bg-clip-text">
                 Start Your Skin Journey
               </h2>
               <p className="text-foreground/70">
@@ -139,8 +139,8 @@ export default function Dashboard() {
         {/* Skin Profile Card */}
         <Card className="flex flex-col justify-between h-full">
           <CardHeader className="pb-2">
-            <CardTitle className="flex items-center">
-              <Search className="w-5 h-5 mr-2 text-primary" />
+            <CardTitle className="flex items-center text-transparent bg-gradient-to-r from-pink-500 to-amber-500 bg-clip-text">
+              <Search className="w-5 h-5 mr-2 text-base text-primary" />
               Skin Profile
             </CardTitle>
             <CardDescription>Your skin type and concerns</CardDescription>
@@ -203,7 +203,7 @@ export default function Dashboard() {
         {/* Routines Card */}
         <Card className="flex flex-col justify-between h-full">
           <CardHeader className="pb-2">
-            <CardTitle className="flex items-center">
+            <CardTitle className="flex items-center text-transparent bg-gradient-to-r from-pink-500 to-amber-500 bg-clip-text">
               <Calendar className="w-5 h-5 mr-2 text-primary" />
               My Routines
             </CardTitle>
@@ -253,7 +253,7 @@ export default function Dashboard() {
         {/* Progress Card */}
         <Card className="flex flex-col justify-between h-full">
           <CardHeader className="pb-2">
-            <CardTitle className="flex items-center">
+            <CardTitle className="flex items-center text-transparent bg-gradient-to-r from-pink-500 to-amber-500 bg-clip-text">
               <Camera className="w-5 h-5 mr-2 text-primary" />
               Skin Progress
             </CardTitle>
