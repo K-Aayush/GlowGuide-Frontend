@@ -1,4 +1,4 @@
-import { Edit, Trash } from "lucide-react";
+import { DollarSign, Edit, Trash } from "lucide-react";
 import { ProductData } from "../../lib/types";
 import { Button } from "../../components/ui/button";
 import {
@@ -50,8 +50,12 @@ export function ProductCard({ product, onEdit, onDelete }: ProductCardProps) {
         <div className="flex items-start justify-between gap-2">
           <p className="text-lg font-bold text-gray-800">{product.name}</p>
 
-          <Badge variant="default">{product.brand}</Badge>
+          <Badge variant="default">
+            <DollarSign className="w-4 h-4" />
+            {product.price}
+          </Badge>
         </div>
+        <p className="text-sm font-semibold text-gray-500">{product.brand}</p>
       </CardContent>
       <CardFooter className="p-4 pt-0">
         <p className="text-sm text-muted-foreground line-clamp-2">
