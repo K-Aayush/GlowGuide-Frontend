@@ -8,7 +8,6 @@ const skinProfileService = {
   },
 
   createSkinProfile: async (profileData: any): Promise<SkinProfileData> => {
-    // Format the data to match the API's expected structure
     const payload = {
       skinType: [{ type: profileData.skinType }],
       concerns: profileData.concerns.map((concern: string) => ({
@@ -23,7 +22,6 @@ const skinProfileService = {
   },
 
   updateSkinProfile: async (profileData: any): Promise<SkinProfileData> => {
-    // Format the data to match the API's expected structure
     const payload = {
       skinType: [{ type: profileData.skinType }],
       concerns: profileData.concerns.map((concern: string) => ({

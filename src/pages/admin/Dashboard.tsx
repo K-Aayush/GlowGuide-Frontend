@@ -122,7 +122,9 @@ export default function AdminDashboard() {
   return (
     <div className="container px-4 py-8 mx-auto">
       <div className="flex flex-col gap-2 mb-8">
-        <h1 className="text-2xl font-bold md:text-3xl">Admin Dashboard</h1>
+        <h1 className="text-2xl font-bold text-transparent md:text-3xl bg-gradient-to-r from-pink-500 to-amber-500 bg-clip-text">
+          Admin Dashboard
+        </h1>
         <p className="text-foreground/70">
           Manage users, products, and monitor system statistics
         </p>
@@ -134,7 +136,9 @@ export default function AdminDashboard() {
         <CardHeader>
           <div className="flex items-center justify-between">
             <div>
-              <CardTitle>Products</CardTitle>
+              <CardTitle className="text-transparent bg-gradient-to-r from-pink-500 to-amber-500 bg-clip-text">
+                Products
+              </CardTitle>
               <CardDescription>Manage skincare products</CardDescription>
             </div>
             <Dialog
@@ -190,7 +194,9 @@ export default function AdminDashboard() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Users</CardTitle>
+          <CardTitle className="text-transparent bg-gradient-to-r from-pink-500 to-amber-500 bg-clip-text">
+            Users
+          </CardTitle>
           <CardDescription>Manage system users</CardDescription>
         </CardHeader>
         <CardContent>

@@ -6,6 +6,7 @@ interface StatsCardProps {
   label: string;
   value: number;
   iconColor: string;
+  bgColor?: string;
 }
 
 export function StatsCard({
@@ -13,9 +14,10 @@ export function StatsCard({
   label,
   value,
   iconColor,
+  bgColor,
 }: StatsCardProps) {
   return (
-    <Card>
+    <Card className={`${bgColor}`}>
       <CardContent className="flex items-center gap-4 p-6">
         <Icon className={`w-8 h-8 ${iconColor}`} />
         <div>

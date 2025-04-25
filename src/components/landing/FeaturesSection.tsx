@@ -3,24 +3,24 @@ import FeatureCard from "./FeatureCard";
 
 const features = [
   {
-    icon: <Sparkles className="w-10 h-10 text-amber-500" />,
+    icon: <Sparkles className="w-10 h-10 text-pink-500" />,
     title: "AI-Powered Analysis",
     description:
       "Get personalized skincare recommendations based on your unique skin profile",
   },
   {
-    icon: <Shield className="w-10 h-10 text-green-500" />,
+    icon: <Shield className="w-10 h-10 text-amber-500" />,
     title: "Expert Guidance",
     description: "Access professional advice from certified dermatologists",
   },
   {
-    icon: <Clock className="w-10 h-10 text-purple-500" />,
+    icon: <Clock className="w-10 h-10 text-pink-400" />,
     title: "Progress Tracking",
     description:
       "Monitor your skin's improvement over time with detailed analytics",
   },
   {
-    icon: <Users className="w-10 h-10 text-indigo-500" />,
+    icon: <Users className="w-10 h-10 text-amber-400" />,
     title: "Community Support",
     description: "Connect with others on their skincare journey",
   },

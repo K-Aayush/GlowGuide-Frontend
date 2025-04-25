@@ -3,7 +3,7 @@ import { AppContext } from "../../context/AppContext";
 import { Button } from "../../components/ui/button";
 import { Input } from "../../components/ui/input";
 import { Card, CardContent } from "../../components/ui/card";
-import { Search, Sparkles, Filter, ArrowUpDown } from "lucide-react";
+import { Search, Sparkles, ArrowUpDown, DollarSign } from "lucide-react";
 import { ProductData } from "../../lib/types";
 import productService from "../../api/services/productService";
 import { toast } from "sonner";
@@ -12,19 +12,9 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
 } from "../../components/ui/select";
-import { Slider } from "../../components/ui/slider";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "../../components/ui/sheet";
+
 import { Badge } from "../../components/ui/badge";
-import { Checkbox } from "../../components/ui/checkbox";
 
 // Skin types
 const skinTypes = [
@@ -140,7 +130,9 @@ export default function ProductExplorer() {
     <div className="container px-4 py-8 mx-auto">
       <div className="flex flex-col gap-2 mb-8 md:flex-row md:items-center md:justify-between">
         <div>
-          <h1 className="text-2xl font-bold md:text-3xl">Product Explorer</h1>
+          <h1 className="text-2xl font-bold text-transparent md:text-3xl bg-gradient-to-r from-pink-500 to-amber-500 bg-clip-text">
+            Product Explorer
+          </h1>
           <p className="text-foreground/70">
             Discover products tailored to your skin needs
           </p>
@@ -161,113 +153,6 @@ export default function ProductExplorer() {
         </div>
 
         <div className="flex flex-wrap gap-2">
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button variant="outline" className="flex items-center gap-2">
-                <Filter className="w-4 h-4" />
-                Filters
-                {(selectedSkinType ||
-                  selectedConcerns.length > 0 ||
-                  minSustainability > 0) && (
-                  <Badge variant="secondary" className="ml-1">
-                    {(selectedSkinType ? 1 : 0) +
-                      (selectedConcerns.length > 0 ? 1 : 0) +
-                      (minSustainability > 0 ? 1 : 0)}
-                  </Badge>
-                )}
-              </Button>
-            </SheetTrigger>
-            <SheetContent>
-              <SheetHeader>
-                <SheetTitle>Filter Products</SheetTitle>
-                <SheetDescription>
-                  Refine your search with these filters
-                </SheetDescription>
-              </SheetHeader>
-              <div className="py-4 space-y-6">
-                <div className="space-y-2">
-                  <h3 className="text-sm font-medium">Skin Type</h3>
-                  <Select
-                    value={selectedSkinType}
-                    onValueChange={setSelectedSkinType}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select skin type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="">All Skin Types</SelectItem>
-                      {skinTypes.map((type) => (
-                        <SelectItem key={type.value} value={type.value}>
-                          {type.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="space-y-2">
-                  <h3 className="text-sm font-medium">Skin Concerns</h3>
-                  <div className="grid grid-cols-1 gap-2">
-                    {skinConcerns.map((concern) => (
-                      <div
-                        key={concern.id}
-                        className="flex items-center space-x-2"
-                      >
-                        <Checkbox
-                          id={concern.id}
-                          checked={selectedConcerns.includes(concern.id)}
-                          onCheckedChange={() => toggleConcern(concern.id)}
-                        />
-                        <label
-                          htmlFor={concern.id}
-                          className="text-sm font-medium leading-none cursor-pointer peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                        >
-                          {concern.label}
-                        </label>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-sm font-medium">
-                      Sustainability Score
-                    </h3>
-                    <span className="text-sm text-foreground/70">
-                      Min: {minSustainability}
-                    </span>
-                  </div>
-                  <Slider
-                    min={0}
-                    max={5}
-                    step={1}
-                    value={[minSustainability]}
-                    onValueChange={(value) => setMinSustainability(value[0])}
-                  />
-                  <div className="flex justify-between text-xs text-foreground/70">
-                    <span>Any</span>
-                    <span>Excellent</span>
-                  </div>
-                </div>
-
-                <div className="pt-4">
-                  <Button
-                    variant="outline"
-                    className="w-full"
-                    onClick={() => {
-                      setSelectedSkinType("");
-                      setSelectedConcerns([]);
-                      setMinSustainability(0);
-                    }}
-                  >
-                    Reset Filters
-                  </Button>
-                </div>
-              </div>
-            </SheetContent>
-          </Sheet>
-
           <Select value={sortBy} onValueChange={setSortBy}>
             <SelectTrigger className="w-[180px]">
               <div className="flex items-center gap-2">
@@ -367,25 +252,18 @@ export default function ProductExplorer() {
               <CardContent className="p-4">
                 <div className="flex items-start justify-between mb-2">
                   <div>
-                    <h3 className="font-semibold">{product.name}</h3>
-                    <p className="text-sm text-foreground/70">
+                    <h3 className="font-bold">{product.name}</h3>
+                    <p className="text-sm font-semibold text-foreground/60">
                       {product.brand}
                     </p>
                   </div>
-                  <div className="flex items-center">
-                    {Array.from({ length: product.sustainabilityScore }).map(
-                      (_, i) => (
-                        <Sparkles key={i} className="w-4 h-4 text-green-500" />
-                      )
-                    )}
-                  </div>
+                  <Badge className="flex items-center text-sm">
+                    <DollarSign className="w-4 h-4" /> {product.price}
+                  </Badge>
                 </div>
                 <p className="mb-3 text-sm line-clamp-2">
                   {product.description}
                 </p>
-                <Button variant="outline" size="sm" className="w-full">
-                  View Details
-                </Button>
               </CardContent>
             </Card>
           ))}

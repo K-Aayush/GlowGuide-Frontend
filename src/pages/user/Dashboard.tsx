@@ -101,7 +101,7 @@ export default function Dashboard() {
   return (
     <div className="container px-4 py-8 mx-auto">
       <div className="flex flex-col gap-2 mb-8">
-        <h1 className="text-2xl font-bold md:text-3xl">
+        <h1 className="text-2xl font-bold text-transparent md:text-3xl bg-gradient-to-r from-pink-500 to-amber-500 bg-clip-text">
           Welcome, {userData?.name}!
         </h1>
         <p className="text-foreground/70">
@@ -116,7 +116,7 @@ export default function Dashboard() {
         <Card className="mb-8 bg-gradient-to-r from-primary/20 to-pink-100">
           <CardContent className="flex flex-col items-center gap-4 py-6 text-center md:flex-row md:justify-between md:text-left">
             <div>
-              <h2 className="mb-2 text-xl font-semibold">
+              <h2 className="mb-2 text-xl font-semibold text-transparent bg-gradient-to-r from-pink-500 to-amber-500 bg-clip-text">
                 Start Your Skin Journey
               </h2>
               <p className="text-foreground/70">
@@ -137,15 +137,15 @@ export default function Dashboard() {
       {/* Dashboard Grid */}
       <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
         {/* Skin Profile Card */}
-        <Card>
+        <Card className="flex flex-col justify-between h-full">
           <CardHeader className="pb-2">
-            <CardTitle className="flex items-center">
-              <Search className="w-5 h-5 mr-2 text-primary" />
+            <CardTitle className="flex items-center text-transparent bg-gradient-to-r from-pink-500 to-amber-500 bg-clip-text">
+              <Search className="w-5 h-5 mr-2 text-base text-primary" />
               Skin Profile
             </CardTitle>
             <CardDescription>Your skin type and concerns</CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="flex-1">
             {userProfile ? (
               <div className="space-y-2">
                 <div>
@@ -201,15 +201,15 @@ export default function Dashboard() {
         </Card>
 
         {/* Routines Card */}
-        <Card>
+        <Card className="flex flex-col justify-between h-full">
           <CardHeader className="pb-2">
-            <CardTitle className="flex items-center">
+            <CardTitle className="flex items-center text-transparent bg-gradient-to-r from-pink-500 to-amber-500 bg-clip-text">
               <Calendar className="w-5 h-5 mr-2 text-primary" />
               My Routines
             </CardTitle>
             <CardDescription>Your daily skincare regimens</CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="flex-1">
             {routines && routines.length > 0 ? (
               <div className="space-y-3">
                 {routines.slice(0, 3).map((routine) => (
@@ -251,15 +251,15 @@ export default function Dashboard() {
         </Card>
 
         {/* Progress Card */}
-        <Card>
+        <Card className="flex flex-col justify-between h-full">
           <CardHeader className="pb-2">
-            <CardTitle className="flex items-center">
+            <CardTitle className="flex items-center text-transparent bg-gradient-to-r from-pink-500 to-amber-500 bg-clip-text">
               <Camera className="w-5 h-5 mr-2 text-primary" />
               Skin Progress
             </CardTitle>
             <CardDescription>Track your skincare journey</CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="flex-1">
             {recentLogs && recentLogs.length > 0 ? (
               <div className="space-y-3">
                 {recentLogs.map((log) => (
@@ -309,95 +309,72 @@ export default function Dashboard() {
       </div>
 
       {/* Recommendation Section */}
-      {userProfile && (
-        <Card className="mt-8">
-          <CardHeader>
-            <CardTitle>Recommended for You</CardTitle>
-            <CardDescription>
-              Based on your skin profile and goals
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              <Link
-                to="/user/products"
-                className="overflow-hidden transition-all border rounded-lg group hover:shadow-md"
-              >
-                <div className="aspect-square bg-muted">
-                  <img
-                    src="https://images.pexels.com/photos/5069618/pexels-photo-5069618.jpeg"
-                    alt="Product recommendation"
-                    className="object-cover w-full h-full transition-transform group-hover:scale-105"
-                  />
-                </div>
-                <div className="p-3">
-                  <p className="font-medium">Explore Products</p>
-                  <p className="text-sm text-foreground/70">
-                    Find products suited for your skin type
-                  </p>
-                </div>
-              </Link>
 
-              <Link
-                to="/user/routines"
-                className="overflow-hidden transition-all border rounded-lg group hover:shadow-md"
-              >
-                <div className="aspect-square bg-muted">
-                  <img
-                    src="https://images.pexels.com/photos/3765174/pexels-photo-3765174.jpeg"
-                    alt="Skincare routine"
-                    className="object-cover w-full h-full transition-transform group-hover:scale-105"
-                  />
-                </div>
-                <div className="p-3">
-                  <p className="font-medium">Build Your Routine</p>
-                  <p className="text-sm text-foreground/70">
-                    Personalized step-by-step regimens
-                  </p>
-                </div>
-              </Link>
+      <Card className="mt-8">
+        <CardHeader>
+          <CardTitle>Recommended for You</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <Link
+              to="/user/products"
+              className="overflow-hidden transition-all border rounded-lg group hover:shadow-md"
+            >
+              <div className="aspect-square bg-muted">
+                <img
+                  src="https://images.pexels.com/photos/5069618/pexels-photo-5069618.jpeg"
+                  alt="Product recommendation"
+                  className="object-cover w-full h-full transition-transform group-hover:scale-105"
+                />
+              </div>
+              <div className="p-3">
+                <p className="font-medium">Explore Products</p>
+                <p className="text-sm text-foreground/70">
+                  Find products suited for your skin type
+                </p>
+              </div>
+            </Link>
 
-              <Link
-                to="/user/progress"
-                className="overflow-hidden transition-all border rounded-lg group hover:shadow-md"
-              >
-                <div className="aspect-square bg-muted">
-                  <img
-                    src="https://images.pexels.com/photos/3785147/pexels-photo-3785147.jpeg"
-                    alt="Progress tracking"
-                    className="object-cover w-full h-full transition-transform group-hover:scale-105"
-                  />
-                </div>
-                <div className="p-3">
-                  <p className="font-medium">Track Progress</p>
-                  <p className="text-sm text-foreground/70">
-                    Document your skincare journey
-                  </p>
-                </div>
-              </Link>
+            <Link
+              to="/user/routines"
+              className="overflow-hidden transition-all border rounded-lg group hover:shadow-md"
+            >
+              <div className="aspect-square bg-muted">
+                <img
+                  src="https://images.pexels.com/photos/3765174/pexels-photo-3765174.jpeg"
+                  alt="Skincare routine"
+                  className="object-cover w-full h-full transition-transform group-hover:scale-105"
+                />
+              </div>
+              <div className="p-3">
+                <p className="font-medium">Build Your Routine</p>
+                <p className="text-sm text-foreground/70">
+                  Personalized step-by-step regimens
+                </p>
+              </div>
+            </Link>
 
-              <Link
-                to="/skincare-101"
-                className="overflow-hidden transition-all border rounded-lg group hover:shadow-md"
-              >
-                <div className="aspect-square bg-muted">
-                  <img
-                    src="https://images.pexels.com/photos/3785148/pexels-photo-3785148.jpeg"
-                    alt="Skincare education"
-                    className="object-cover w-full h-full transition-transform group-hover:scale-105"
-                  />
-                </div>
-                <div className="p-3">
-                  <p className="font-medium">Skincare 101</p>
-                  <p className="text-sm text-foreground/70">
-                    Learn about ingredients and techniques
-                  </p>
-                </div>
-              </Link>
-            </div>
-          </CardContent>
-        </Card>
-      )}
+            <Link
+              to="/user/progress"
+              className="overflow-hidden transition-all border rounded-lg group hover:shadow-md"
+            >
+              <div className="aspect-square bg-muted">
+                <img
+                  src="https://images.pexels.com/photos/3785147/pexels-photo-3785147.jpeg"
+                  alt="Progress tracking"
+                  className="object-cover w-full h-full transition-transform group-hover:scale-105"
+                />
+              </div>
+              <div className="p-3">
+                <p className="font-medium">Track Progress</p>
+                <p className="text-sm text-foreground/70">
+                  Document your skincare journey
+                </p>
+              </div>
+            </Link>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }
