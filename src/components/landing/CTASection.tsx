@@ -1,7 +1,9 @@
 import { ArrowRight } from "lucide-react";
 import { Button } from "../ui/button";
+import { useNavigate } from "react-router-dom";
 
 export default function CTASection() {
+  const navigate = useNavigate();
   return (
     <section className="w-full py-12 md:py-24 lg:py-32 bg-muted">
       <div className="container px-4 md:px-6">
@@ -15,7 +17,11 @@ export default function CTASection() {
               skincare routine
             </p>
           </div>
-          <Button size="lg" className="inline-flex items-center">
+          <Button
+            onClick={() => navigate("/login")}
+            size="lg"
+            className="inline-flex items-center"
+          >
             Get Started Now <ArrowRight className="w-4 h-4 ml-2" />
           </Button>
         </div>
