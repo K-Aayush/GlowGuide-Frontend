@@ -1,7 +1,9 @@
 import { ArrowRight } from "lucide-react";
 import { Button } from "../ui/button";
+import { useNavigate } from "react-router-dom";
 
 export default function HeroSection() {
+  const navigate = useNavigate();
   return (
     <section className="relative py-20 overflow-hidden md:py-32">
       <div className="container px-4 md:px-6">
@@ -17,10 +19,15 @@ export default function HeroSection() {
               </p>
             </div>
             <div className="flex flex-col gap-2 min-[400px]:flex-row">
-              <Button size="lg" className="bg-pink-500 hover:bg-pink-600">
+              <Button
+                onClick={() => navigate("/login")}
+                size="lg"
+                className="bg-pink-500 hover:bg-pink-600"
+              >
                 Start Your Journey <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
               <Button
+                onClick={() => navigate("/skincare-101")}
                 variant="outline"
                 size="lg"
                 className="border-pink-200 hover:bg-pink-50"
