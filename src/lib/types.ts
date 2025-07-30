@@ -69,6 +69,7 @@ export interface UserData {
   role: Role;
   phone?: string;
   image?: string;
+  dermatologistId?: string;
   createdAt: string;
 }
 
