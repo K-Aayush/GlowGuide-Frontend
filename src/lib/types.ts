@@ -69,14 +69,17 @@ export interface UserData {
   role: Role;
   phone?: string;
   image?: string;
+  dermatologistId?: string;
+  status?: "PENDING" | "APPROVED" | "REJECTED";
   createdAt: string;
 }
 
 export interface AuthResponse {
   success: boolean;
   message: string;
-  user: UserData;
-  token: string;
+  user?: UserData;
+  token?: string;
+  requiresApproval?: boolean;
 }
 
 // Admin related types
@@ -157,6 +160,7 @@ export interface ProductData {
   sustainabilityScore: number;
   allergens?: string | null;
   imageUrl?: string | null;
+  externalUrl?: string | null;
   price: number;
   createdAt: Date;
   updatedAt: Date;
