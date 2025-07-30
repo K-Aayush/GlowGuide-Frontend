@@ -160,6 +160,7 @@ export interface ProductData {
   allergens?: string | null;
   imageUrl?: string | null;
   price: number;
+  externalUrl?: string;
   createdAt: Date;
   updatedAt: Date;
 }

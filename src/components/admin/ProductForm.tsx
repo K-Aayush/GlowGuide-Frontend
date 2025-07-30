@@ -42,6 +42,7 @@ export function ProductForm({ onSubmit, editingProduct }: ProductFormProps) {
           skinTypes: editingProduct.suitableSkinTypes.map((st) => st.type),
           concerns: editingProduct.targetConcerns.map((tc) => tc.concern),
           price: editingProduct.price,
+          externalUrl: editingProduct.externalUrl || "",
         }
       : {
           name: "",
@@ -53,6 +54,7 @@ export function ProductForm({ onSubmit, editingProduct }: ProductFormProps) {
           skinTypes: [],
           concerns: [],
           price: 0,
+          externalUrl: "",
         },
   });
 
@@ -186,6 +188,24 @@ export function ProductForm({ onSubmit, editingProduct }: ProductFormProps) {
             )}
           />
         </div>
+
+        <FormField
+          control={form.control}
+          name="externalUrl"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>External Product URL (Optional)</FormLabel>
+              <FormControl>
+                <Input
+                  type="url"
+                  placeholder="https://example.com/product"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
         <div className="grid grid-cols-2 gap-4">
           <FormField
