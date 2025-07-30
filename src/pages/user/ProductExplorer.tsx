@@ -234,7 +234,14 @@ export default function ProductExplorer() {
           {filteredProducts.map((product) => (
             <Card
               key={product.id}
-              className="overflow-hidden transition-all hover:shadow-md"
+              className={`overflow-hidden transition-all hover:shadow-md ${
+                product.externalUrl ? "cursor-pointer" : ""
+              }`}
+              onClick={() => {
+                if (product.externalUrl) {
+                  window.open(product.externalUrl, "_blank");
+                }
+              }}
             >
               <div className="aspect-square bg-muted">
                 {product.imageUrl ? (
@@ -264,6 +271,11 @@ export default function ProductExplorer() {
                 <p className="mb-3 text-sm line-clamp-2">
                   {product.description}
                 </p>
+                {product.externalUrl && (
+                  <p className="text-xs text-primary">
+                    Click to view product details
+                  </p>
+                )}
               </CardContent>
             </Card>
           ))}

@@ -16,8 +16,19 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product, onEdit, onDelete }: ProductCardProps) {
+  const handleProductClick = () => {
+    if (product.externalUrl) {
+      window.open(product.externalUrl, "_blank");
+    }
+  };
+
   return (
-    <Card className="overflow-hidden transition-all group hover:shadow-lg">
+    <Card
+      className={`overflow-hidden transition-all group hover:shadow-lg ${
+        product.externalUrl ? "cursor-pointer" : ""
+      }`}
+      onClick={handleProductClick}
+    >
       <CardHeader className="p-0">
         <div className="relative overflow-hidden aspect-square">
           <img
@@ -30,7 +41,10 @@ export function ProductCard({ product, onEdit, onDelete }: ProductCardProps) {
             <Button
               variant="secondary"
               size="icon"
-              onClick={() => onEdit(product)}
+              onClick={(e) => {
+                e.stopPropagation();
+                onEdit(product);
+              }}
               className="w-8 h-8"
             >
               <Edit className="w-4 h-4" />
@@ -38,7 +52,10 @@ export function ProductCard({ product, onEdit, onDelete }: ProductCardProps) {
             <Button
               variant="destructive"
               size="icon"
-              onClick={() => onDelete(product.id)}
+              onClick={(e) => {
+                e.stopPropagation();
+                onDelete(product.id);
+              }}
               className="w-8 h-8"
             >
               <Trash className="w-4 h-4" />
