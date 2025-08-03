@@ -15,6 +15,7 @@ import {
 } from "../../components/ui/select";
 
 import { Badge } from "../../components/ui/badge";
+import { ExternalLink } from "lucide-react";
 
 // Skin types
 const skinTypes = [
@@ -239,20 +240,31 @@ export default function ProductExplorer() {
               }`}
               onClick={() => {
                 if (product.externalUrl) {
-                  window.open(product.externalUrl, "_blank");
+                  window.open(
+                    product.externalUrl,
+                    "_blank",
+                    "noopener,noreferrer"
+                  );
                 }
               }}
             >
-              <div className="aspect-square bg-muted">
+              <div className="relative aspect-square bg-muted group">
                 {product.imageUrl ? (
                   <img
                     src={product.imageUrl}
                     alt={product.name}
-                    className="object-cover w-full h-full"
+                    className="object-cover w-full h-full transition-transform group-hover:scale-105"
                   />
                 ) : (
                   <div className="flex items-center justify-center w-full h-full bg-muted">
                     <Sparkles className="w-12 h-12 text-foreground/20" />
+                  </div>
+                )}
+                {product.externalUrl && (
+                  <div className="absolute transition-opacity opacity-0 top-2 right-2 group-hover:opacity-100">
+                    <div className="p-1 rounded-full bg-white/90">
+                      <ExternalLink className="w-4 h-4 text-gray-700" />
+                    </div>
                   </div>
                 )}
               </div>
@@ -272,7 +284,8 @@ export default function ProductExplorer() {
                   {product.description}
                 </p>
                 {product.externalUrl && (
-                  <p className="text-xs text-primary">
+                  <p className="flex items-center gap-1 text-xs text-primary">
+                    <ExternalLink className="w-3 h-3" />
                     Click to view product details
                   </p>
                 )}
