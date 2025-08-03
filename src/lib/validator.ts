@@ -1,5 +1,5 @@
 import { z } from "zod";
-const MAX_FILE_SIZE = 5000000; // 5MB
+const MAX_FILE_SIZE = 5000000; 
 const ACCEPTED_IMAGE_TYPES = [
   "image/jpeg",
   "image/jpg",
@@ -46,6 +46,7 @@ export const registerFormSchema = z.object({
     errorMap: () => ({ message: "you must select a role" }),
   }),
   phone: z.string().min(3, "Phone Number is required."),
+  dermatologistId: z.string().optional(),
 });
 
 export const progressLogSchema = z.object({
@@ -128,6 +129,7 @@ export const productSchema = z.object({
   concerns: z.array(z.string()).min(1, "Select at least one concern"),
   image: z.any().optional(),
   price: z.number().gte(5, "Amount must be atleast 5").positive(),
+  externalUrl: z.string().url("Must be a valid URL").optional(),
 });
 
 export const profileSchema = z.object({

@@ -29,6 +29,7 @@ import { AxiosError } from "axios";
 
 const RegisterForm = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [selectedRole, setSelectedRole] = useState<string>("");
   const { setIsLoading, setToken, setUserData } = useContext(AppContext);
   const navigate = useNavigate();
   const form = useForm<registerFormData>({
@@ -39,6 +40,7 @@ const RegisterForm = () => {
       name: "",
       phone: "",
       role: undefined,
+      dermatologistId: "",
     },
     mode: "onChange",
   });
@@ -49,15 +51,19 @@ const RegisterForm = () => {
       const data = await authService.register(values);
 
       if (data.success) {
-        setToken(data.token);
-        setUserData(data.user);
         toast.success(data.message);
-        if (data.user.role === "USER") {
-          navigate("/userDashboard");
-        } else if (data.user.role === "DERMATOLOGISTS") {
-          navigate("/dermatologist/dashboard");
-        } else {
+
+        // Check if registration requires approval
+        if (data.requiresApproval) {
           navigate("/");
+        } else {
+          setToken(data.token);
+          setUserData(data.user);
+          if (data.user.role === "USER") {
+            navigate("/user/dashboard");
+          } else {
+            navigate("/");
+          }
         }
       } else {
         toast.error(data.message);
@@ -215,7 +221,10 @@ const RegisterForm = () => {
                       <FormControl>
                         <Select
                           value={field.value}
-                          onValueChange={field.onChange}
+                          onValueChange={(value) => {
+                            field.onChange(value);
+                            setSelectedRole(value);
+                          }}
                         >
                           <SelectTrigger>
                             <SelectValue placeholder="Select a role" />
@@ -238,6 +247,27 @@ const RegisterForm = () => {
                     </FormItem>
                   )}
                 />
+
+                {selectedRole === "DERMATOLOGISTS" && (
+                  <FormField
+                    control={form.control}
+                    name="dermatologistId"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Dermatologist License ID</FormLabel>
+                        <FormControl>
+                          <Input
+                            required
+                            type="text"
+                            placeholder="Enter your medical license ID"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                )}
               </div>
 
               <Button type="submit">Create Account</Button>

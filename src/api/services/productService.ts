@@ -18,6 +18,7 @@ interface CreateProductPayload {
   skinTypes: string[];
   concerns: string[];
   image?: File;
+  externalUrl?: string;
 }
 
 const productService = {

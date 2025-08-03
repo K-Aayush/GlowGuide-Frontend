@@ -31,6 +31,7 @@ import { AdminStats } from "../../components/admin/AdminStats";
 import { ProductForm } from "../../components/admin/ProductForm";
 import { ProductsTable } from "../../components/admin/ProductsTable";
 import { UsersTable } from "../../components/admin/UsersTable";
+import { PendingDermatologists } from "../../components/admin/pendingDermotologist";
 
 export default function AdminDashboard() {
   const { setIsLoading } = useContext(AppContext);
@@ -42,6 +43,9 @@ export default function AdminDashboard() {
   const [editingProduct, setEditingProduct] = useState<ProductData | null>(
     null
   );
+  const [pendingDermatologists, setPendingDermatologists] = useState<
+    UserData[]
+  >([]);
 
   useEffect(() => {
     fetchDashboardData();
@@ -50,15 +54,18 @@ export default function AdminDashboard() {
   const fetchDashboardData = async () => {
     try {
       setIsLoading(true);
-      const [statsData, usersData, productsData] = await Promise.all([
-        adminService.getStats(),
-        adminService.getAllUsers(),
-        productService.getProducts(),
-      ]);
+      const [statsData, usersData, productsData, pendingData] =
+        await Promise.all([
+          adminService.getStats(),
+          adminService.getAllUsers(),
+          productService.getProducts(),
+          adminService.getPendingDermatologists(),
+        ]);
 
       setStats(statsData);
       setUsers(usersData);
       setProducts(productsData);
+      setPendingDermatologists(pendingData);
     } catch (error) {
       console.error("Error fetching dashboard data:", error);
       toast.error("Failed to load dashboard data");
@@ -131,6 +138,14 @@ export default function AdminDashboard() {
       </div>
 
       <AdminStats stats={stats} />
+
+      {/* Pending Dermatologists */}
+      {pendingDermatologists.length > 0 && (
+        <PendingDermatologists
+          dermatologists={pendingDermatologists}
+          onApprove={fetchDashboardData}
+        />
+      )}
 
       <Card className="mb-8">
         <CardHeader>

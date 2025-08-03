@@ -12,6 +12,7 @@ interface RegisterPayload {
   password: string;
   phone: string;
   role: string;
+  dermatologistId?: string;
 }
 
 const authService = {

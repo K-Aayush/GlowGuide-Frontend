@@ -69,6 +69,7 @@ export interface UserData {
   role: Role;
   phone?: string;
   image?: string;
+  dermatologistId?: string;
   createdAt: string;
 }
 
@@ -77,6 +78,7 @@ export interface AuthResponse {
   message: string;
   user: UserData;
   token: string;
+  requiresApproval?: boolean;
 }
 
 // Admin related types
@@ -158,6 +160,7 @@ export interface ProductData {
   allergens?: string | null;
   imageUrl?: string | null;
   price: number;
+  externalUrl?: string;
   createdAt: Date;
   updatedAt: Date;
 }
